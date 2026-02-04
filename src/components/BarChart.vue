@@ -41,16 +41,35 @@ type EChartsOption = ComposeOption<
 const availableSeries = {
   adminPicks(counts: Counts[]): BarSeriesOption {
     return {
-      data: counts.map(([_, count]) => count.admin.pick - count.admin.snipe),
+      data: counts.map(
+        ([_, count]) =>
+          count.admin.pick - count.player.snipe.admin - count.admin.snipe.admin,
+      ),
     };
   },
   playerPicks(counts: Counts[]): BarSeriesOption {
     return {
-      data: counts.map(([_, count]) => count.player.pick - count.player.snipe),
+      data: counts.map(
+        ([_, count]) =>
+          count.player.pick -
+          count.player.snipe.player -
+          count.admin.snipe.player,
+      ),
     };
   },
-  playerSnipes(counts: Counts[]): BarSeriesOption {
-    return { data: counts.map(([_, count]) => count.player.snipe) };
+  snipesOnPlayer(counts: Counts[]): BarSeriesOption {
+    return {
+      data: counts.map(
+        ([_, count]) => count.player.snipe.player + count.admin.snipe.player,
+      ),
+    };
+  },
+  snipesOnAdmin(counts: Counts[]): BarSeriesOption {
+    return {
+      data: counts.map(
+        ([_, count]) => count.player.snipe.admin + count.admin.snipe.admin,
+      ),
+    };
   },
   adminBans(counts: Counts[]): BarSeriesOption {
     return { data: counts.map(([_, count]) => count.admin.ban) };
@@ -58,7 +77,7 @@ const availableSeries = {
   playerBans(counts: Counts[]): BarSeriesOption {
     return { data: counts.map(([_, count]) => count.player.ban) };
   },
-  civPlayed(counts): BarSeriesOption {
+  civPlayed(counts: Counts[]): BarSeriesOption {
     return { data: counts.map(([_, count]) => count) };
   },
   civWinrate(counts): BarSeriesOption {

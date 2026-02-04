@@ -4,7 +4,7 @@ import { withBase } from "vitepress";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
 import CivPickChart from "./CivPickChart.vue";
-import { allCivs, DraftAction, Drafts, Game } from "../types";
+import { allCivs, Draft, DraftAction, Drafts, Game } from "../types";
 import CivBansChart from "./CivBansChart.vue";
 import CivPlayedChart, { type GameStats } from "./CivPlayedChart.vue";
 import CivWinrateChart from "./CivWinrateChart.vue";
@@ -28,19 +28,35 @@ async function fetchData(type: string) {
   return response.json();
 }
 
-function summarizeDrafts(drafts: DraftAction[]) {
+function summarizeDrafts(drafts: Draft[]) {
   let counts = Object.fromEntries(
-    drafts.map((draft) => [
-      draft.map,
-      {
-        admin: { pick: 0, ban: 0, snipe: 0, steal: 0 },
-        player: { pick: 0, ban: 0, snipe: 0, steal: 0 },
-      },
-    ]),
+    drafts
+      .flatMap((draft) => draft.draft)
+      .map((draft) => [
+        draft.map,
+        {
+          admin: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
+          player: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
+        },
+      ]),
   );
 
   for (let draft of drafts) {
-    counts[draft.map][draft.type][draft.action] += 1;
+    let picks = Object.fromEntries(
+      draft.draft.map((draft) => [draft.map, { admin: 0, player: 0 }]),
+    );
+    for (let action of draft.draft) {
+      if (action.action == "pick") {
+        picks[action.map][action.type] += 1;
+      }
+
+      if (action.action != "snipe") {
+        counts[action.map][action.type][action.action] += 1;
+      } else {
+        const affectedPick = picks[action.map].admin > 0 ? "admin" : "player";
+        counts[action.map][action.type][action.action][affectedPick] += 1;
+      }
+    }
   }
   return counts;
 }
@@ -48,17 +64,13 @@ const mapCounts = computed(() => {
   if (!drafts.value?.mapDrafts) {
     return [];
   }
-  return summarizeDrafts(
-    drafts.value.mapDrafts.flatMap((draft) => draft.draft),
-  );
+  return summarizeDrafts(drafts.value.mapDrafts);
 });
 const civCounts = computed(() => {
   if (!drafts.value?.civDrafts) {
     return {};
   }
-  return summarizeDrafts(
-    drafts.value.civDrafts.flatMap((draft) => draft.draft),
-  );
+  return summarizeDrafts(drafts.value.civDrafts);
 });
 
 const gameStats = computed(() => {
