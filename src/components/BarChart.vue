@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { use } from "echarts/core";
+import { use, registerTheme } from "echarts/core";
+import "echarts/theme/rainbow.js";
 import { BarChart } from "echarts/charts";
 import {
   TitleComponent,
@@ -16,9 +17,9 @@ import type {
   LegendComponentOption,
   GridComponentOption,
 } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+import VChart from "vue-echarts";
 import { useData } from "vitepress";
-import { computed, ComputedRef, provide } from "vue";
+import { computed, ComputedRef } from "vue";
 import { Counts } from "../types";
 
 use([
@@ -108,7 +109,57 @@ const {
   labelFormat?: string;
 }>();
 const { isDark } = useData();
-provide(THEME_KEY, isDark ? "chalk" : "vintage");
+const axisTheme = {
+  axisLine: {
+    lineStyle: {
+      color: "#c6d0f5",
+    },
+  },
+  axisLabel: {
+    color: null,
+  },
+  splitLine: {
+    lineStyle: {
+      color: ["#E0E6F1"],
+    },
+  },
+  splitArea: {
+    areaStyle: {
+      color: ["rgba(250,250,250,0.2)", "rgba(210,219,238,0.2)"],
+    },
+  },
+  minorSplitLine: {
+    color: "#F4F7FD",
+  },
+};
+registerTheme("frappe", {
+  backgroundColor: "#303446",
+  subtitleColor: "#b5bfe2",
+  title: {
+    backgroundColor: "rgba(0,0,0,0)",
+    borderColor: "#babbf1",
+    textStyle: {
+      color: "#c6d0f5",
+    },
+    subtextStyle: {
+      color: "#b5bfe2",
+    },
+  },
+  color: [
+    "#8caaee", // Blue
+    "#e5c890", // Yellow
+    "#a6d189", // Green
+    "#e78284", // Red
+    "#a5adce", // Subtext 0
+    "#81c8be", // Teal
+    "#f4b8e4", // Pink
+  ],
+  valueAxis: { ...axisTheme },
+  timeAxis: { ...axisTheme },
+  logAxis: { ...axisTheme },
+  categoryAxis: { ...axisTheme },
+});
+const themeName = computed(() => (isDark.value ? "frappe" : "rainbow"));
 
 const option: ComputedRef<EChartsOption> = computed(() => {
   const labels = counts.map(([map, _]) => map);
@@ -167,6 +218,7 @@ const option: ComputedRef<EChartsOption> = computed(() => {
       <v-chart
         :style="{ height: horizontal ? '1000px' : '500px' }"
         :option="option"
+        :theme="themeName"
       />
     </ClientOnly>
   </div>
