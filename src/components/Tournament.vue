@@ -11,6 +11,7 @@ import CivWinrateChart from "./CivWinrateChart.vue";
 
 const props = defineProps({
   code: { type: String, required: true },
+  presetMapNames: { type: Object, required: true },
 });
 
 const drafts: Ref<Drafts> = ref({ civDrafts: [], mapDrafts: [] });
@@ -29,11 +30,12 @@ async function fetchData(type: string) {
 }
 
 function summarizeDrafts(drafts: Draft[]) {
+  const t = (id: string) => props.presetMapNames[id] ?? id;
   let counts = Object.fromEntries(
     drafts
       .flatMap((draft) => draft.draft)
       .map((draft) => [
-        draft.map,
+        t(draft.map),
         {
           admin: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
           player: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
@@ -43,18 +45,19 @@ function summarizeDrafts(drafts: Draft[]) {
 
   for (let draft of drafts) {
     let picks = Object.fromEntries(
-      draft.draft.map((draft) => [draft.map, { admin: 0, player: 0 }]),
+      draft.draft.map((draft) => [t(draft.map), { admin: 0, player: 0 }]),
     );
     for (let action of draft.draft) {
       if (action.action == "pick") {
-        picks[action.map][action.type] += 1;
+        picks[t(action.map)][action.type] += 1;
       }
 
       if (action.action != "snipe") {
-        counts[action.map][action.type][action.action] += 1;
+        counts[t(action.map)][action.type][action.action] += 1;
       } else {
-        const affectedPick = picks[action.map].admin > 0 ? "admin" : "player";
-        counts[action.map][action.type][action.action][affectedPick] += 1;
+        const affectedPick =
+          picks[t(action.map)].admin > 0 ? "admin" : "player";
+        counts[t(action.map)][action.type][action.action][affectedPick] += 1;
       }
     }
   }
