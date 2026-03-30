@@ -1,0 +1,46 @@
+name: T90 Titans League Community Cup 2
+maps:
+  - TTL5 African River v3
+  - TTL5 Bypass v2
+  - TTL5 Coast Arena v4
+  - TTL5 Dzimbabwe v3
+  - TTL5 High Tides v4
+  - TTL5 Monocle v4
+  - TTL5 Mudflow v3
+  - TTL5 Northern Crossings
+  - TTL5 Quarry v3
+  - TTL5 Reverse Acropolis v4
+  - TTL5 Seychelles v6
+  - TTL5 Slopes v2
+  - TTL5 Stranded v3
+  - TTL5 Tulou (Regicide) v3
+  - TTL5 Valley v2
+brackets:
+  - Obsidian
+  - Titanium
+  - Chromium
+  - Nickel
+  - Cobalt
+  - Copper
+  - Zinc
+  - Aluminium
+  - Tin
+  - Lean
+  - Steel
+  - Iron
+  - Brick
+  - Stone
+  - Granite
+  - Slate
+  - Concrete
+  - Gravel
+  - Sand
+  - Ash
+  - Dirt
+presets:
+  maps:
+    pa3: EWrjY
+    bo5: Shspm
+  civs:
+    pa3: VnEoe
+    bo5: IZIQR
