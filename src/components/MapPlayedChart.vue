@@ -11,7 +11,7 @@ export type GameStats = {
 };
 const props = defineProps<{ games: GameStats }>();
 const played = computed(() =>
-  Object.entries(props.games.maps).toSorted(([_mapA, a], [_mapB, b]) => a - b),
+  Object.entries(props.games.maps).toSorted(([_mapA, a], [_mapB, b]) => b - a),
 );
 
 const series: SeriesParam[] = [{ type: "mapPlayed" }];
