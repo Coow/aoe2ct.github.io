@@ -31,7 +31,7 @@ async function fetchData(type: string) {
 }
 
 function summarizeDrafts(drafts: Draft[]) {
-  const t = (id: string) => props.presetMapNames[id] ?? id;
+  const t = (id: string) => normalizeCivs(props.presetMapNames[id] ?? id);
   let counts = Object.fromEntries(
     drafts
       .flatMap((draft) => draft.draft)
@@ -87,7 +87,7 @@ const gameStats = computed(() => {
         ...stats,
         civs: {
           ...stats.civs,
-          [game.winningCiv]: {
+          [winning]: {
             ...stats.civs[winning],
             wins: stats.civs[winning].wins + 1,
             losses: stats.civs[winning].wins,
@@ -95,7 +95,7 @@ const gameStats = computed(() => {
             winrate:
               (stats.civs[winning].wins + 1) / (stats.civs[winning].total + 1),
           },
-          [game.losingCiv]: {
+          [losing]: {
             ...stats.civs[losing],
             wins: stats.civs[losing].wins,
             losses: stats.civs[losing].wins + 1,
