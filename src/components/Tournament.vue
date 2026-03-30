@@ -8,6 +8,7 @@ import { allCivs, Draft, Drafts, Game } from "../types";
 import CivBansChart from "./CivBansChart.vue";
 import CivPlayedChart, { type GameStats } from "./CivPlayedChart.vue";
 import CivWinrateChart from "./CivWinrateChart.vue";
+import MapPlayedChart from "./MapPlayedChart.vue";
 import { normalizeCivs } from "../utils";
 
 const props = defineProps({
@@ -103,6 +104,10 @@ const gameStats = computed(() => {
             winrate: stats.civs[losing].wins / (stats.civs[losing].total + 1),
           },
         },
+        maps: {
+          ...stats.maps,
+          [game.map]: (stats.maps[game.map] ?? 0) + 1,
+        },
       };
     },
     {
@@ -120,6 +125,9 @@ const gameStats = computed(() => {
           },
         ]),
       ),
+      maps: Object.fromEntries(
+        Object.values(props.presetMapNames).map((mapName) => [mapName, 0]),
+      ),
     },
   );
 });
@@ -133,6 +141,7 @@ const gameStats = computed(() => {
   <CivPickChart :drafts="civCounts" />
   <CivBansChart :drafts="civCounts" />
   <h2>Games</h2>
+  <MapPlayedChart :games="gameStats" />
   <CivPlayedChart :games="gameStats" />
   <CivWinrateChart :games="gameStats" />
 </template>

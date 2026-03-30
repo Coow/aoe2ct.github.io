@@ -86,6 +86,9 @@ const availableSeries = {
       data: counts.map(([_, count]) => Math.round(count.winrate * 10000) / 100),
     };
   },
+  mapPlayed(counts: [string, number][]): BarSeriesOption {
+    return { data: counts.map(([_, count]) => count) };
+  },
 };
 
 type Series = typeof availableSeries;

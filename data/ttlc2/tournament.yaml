@@ -3,6 +3,7 @@ maps:
   - TTL5 African River v3
   - TTL5 Bypass v2
   - TTL5 Coast Arena v4
+  - TTL5 Dzimbabwe v2
   - TTL5 Dzimbabwe v3
   - TTL5 High Tides v4
   - TTL5 Monocle v4
@@ -10,6 +11,7 @@ maps:
   - TTL5 Northern Crossings
   - TTL5 Quarry v3
   - TTL5 Reverse Acropolis v4
+  - TTL5 Seychelles v5
   - TTL5 Seychelles v6
   - TTL5 Slopes v2
   - TTL5 Stranded v3
@@ -44,3 +46,9 @@ presets:
   civs:
     pa3: VnEoe
     bo5: IZIQR
+map_renames:
+  SLL Mudflow: TTL5 Mudflow v3
+  "[ALS15] African River - TTL5": TTL5 African River v3
+naming:
+  prefix: TTL5
+  versioned: true
