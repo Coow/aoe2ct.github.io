@@ -5,6 +5,7 @@ import type { PageData } from "vitepress";
 type TournamentInfo = {
   name: string;
   presets: Record<string, string | string[]>;
+  brackets: string[];
 };
 async function presetToNameMapping(preset: string) {
   const response = await fetch(`https://aoe2cm.net/api/preset/${preset}`);
@@ -47,6 +48,7 @@ export default {
             tournament: tournament,
             name: info.name,
             presetMapChoices,
+            brackets: info.brackets,
           },
         };
       }),

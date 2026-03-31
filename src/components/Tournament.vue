@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, Ref, ref, watchEffect } from "vue";
-import { withBase } from "vitepress";
+import { withBase, useData } from "vitepress";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
 import CivPickChart from "./CivPickChart.vue";
@@ -15,10 +15,12 @@ const props = defineProps({
   code: { type: String, required: true },
   presetMapNames: { type: Object, required: true },
 });
+const { params } = useData();
 
 const drafts: Ref<Drafts> = ref({ civDrafts: [], mapDrafts: [] });
 const games: Ref<Game[]> = ref([]);
 const players = ref([]);
+const selectedBrackets = ref([...(params.value?.brackets ?? [])]);
 
 watchEffect(async () => {
   drafts.value = await fetchData("drafts");
@@ -33,8 +35,12 @@ async function fetchData(type: string) {
 
 function summarizeDrafts(drafts: Draft[]) {
   const t = (id: string) => normalizeCivs(props.presetMapNames[id] ?? id);
+  const filteredDrafts = drafts.filter((draft) =>
+    selectedBrackets.value.includes(draft.bracket),
+  );
+
   let counts = Object.fromEntries(
-    drafts
+    filteredDrafts
       .flatMap((draft) => draft.draft)
       .map((draft) => [
         t(draft.map),
@@ -45,7 +51,7 @@ function summarizeDrafts(drafts: Draft[]) {
       ]),
   );
 
-  for (let draft of drafts) {
+  for (let draft of filteredDrafts) {
     let picks = Object.fromEntries(
       draft.draft.map((draft) => [t(draft.map), { admin: 0, player: 0 }]),
     );
@@ -67,7 +73,7 @@ function summarizeDrafts(drafts: Draft[]) {
 }
 const mapCounts = computed(() => {
   if (!drafts.value?.mapDrafts) {
-    return [];
+    return {};
   }
   return summarizeDrafts(drafts.value.mapDrafts);
 });
@@ -79,62 +85,106 @@ const civCounts = computed(() => {
 });
 
 const gameStats = computed(() => {
-  return games.value.reduce<GameStats>(
-    (stats, game) => {
-      const winning = normalizeCivs(game.winningCiv);
-      const losing = normalizeCivs(game.losingCiv);
+  return games.value
+    .filter((game) => selectedBrackets.value.includes(game.bracket))
+    .reduce<GameStats>(
+      (stats, game) => {
+        const winning = normalizeCivs(game.winningCiv);
+        const losing = normalizeCivs(game.losingCiv);
 
-      return {
-        ...stats,
-        civs: {
-          ...stats.civs,
-          [winning]: {
-            ...stats.civs[winning],
-            wins: stats.civs[winning].wins + 1,
-            losses: stats.civs[winning].wins,
-            total: stats.civs[winning].total + 1,
-            winrate:
-              (stats.civs[winning].wins + 1) / (stats.civs[winning].total + 1),
+        return {
+          ...stats,
+          civs: {
+            ...stats.civs,
+            [winning]: {
+              ...stats.civs[winning],
+              wins: stats.civs[winning].wins + 1,
+              losses: stats.civs[winning].wins,
+              total: stats.civs[winning].total + 1,
+              winrate:
+                (stats.civs[winning].wins + 1) /
+                (stats.civs[winning].total + 1),
+            },
+            [losing]: {
+              ...stats.civs[losing],
+              wins: stats.civs[losing].wins,
+              losses: stats.civs[losing].wins + 1,
+              total: stats.civs[losing].total + 1,
+              winrate: stats.civs[losing].wins / (stats.civs[losing].total + 1),
+            },
           },
-          [losing]: {
-            ...stats.civs[losing],
-            wins: stats.civs[losing].wins,
-            losses: stats.civs[losing].wins + 1,
-            total: stats.civs[losing].total + 1,
-            winrate: stats.civs[losing].wins / (stats.civs[losing].total + 1),
+          maps: {
+            ...stats.maps,
+            [game.map]: (stats.maps[game.map] ?? 0) + 1,
           },
-        },
-        maps: {
-          ...stats.maps,
-          [game.map]: (stats.maps[game.map] ?? 0) + 1,
-        },
-      };
-    },
-    {
-      civs: Object.fromEntries(
-        allCivs.map((civ) => [
-          civ,
-          {
-            wins: 0,
-            losses: 0,
-            total: 0,
-            winrate: 0,
-            drafted:
-              civCounts.value[civ]?.admin?.pick +
-              civCounts.value[civ]?.player?.pick,
-          },
-        ]),
-      ),
-      maps: Object.fromEntries(
-        Object.values(props.presetMapNames).map((mapName) => [mapName, 0]),
-      ),
-    },
-  );
+        };
+      },
+      {
+        civs: Object.fromEntries(
+          allCivs.map((civ) => [
+            civ,
+            {
+              wins: 0,
+              losses: 0,
+              total: 0,
+              winrate: 0,
+              drafted:
+                civCounts.value[civ]?.admin?.pick +
+                civCounts.value[civ]?.player?.pick,
+            },
+          ]),
+        ),
+        maps: Object.fromEntries(
+          Object.values(props.presetMapNames).map((mapName) => [mapName, 0]),
+        ),
+      },
+    );
 });
 </script>
 
 <template>
   <h1>{{ $params.name }} stats</h1>
+  <hr />
+  <h5>Filters</h5>
+  <div class="pico">
+    <details :class="$style.options">
+      <summary>Brackets</summary>
+      <fieldset>
+        <fieldset class="grid">
+          <label v-for="bracket in $params.brackets" :id="bracket">
+            <input
+              type="checkbox"
+              :value="bracket"
+              v-model="selectedBrackets"
+            />
+            {{ bracket }}
+          </label>
+        </fieldset>
+        <input
+          type="button"
+          class="outline"
+          value="Select all"
+          @click="selectedBrackets = $params.brackets"
+        />
+        <input
+          type="button"
+          class="outline secondary"
+          value="Deselect all"
+          @click="selectedBrackets = []"
+        />
+      </fieldset>
+    </details>
+    <small>
+      <strong>Brackets:</strong>
+      {{
+        selectedBrackets.length == $params.brackets.length
+          ? "All"
+          : selectedBrackets.length == 0
+            ? "None"
+            : selectedBrackets.join(", ")
+      }}
+    </small>
+  </div>
   <h2>Drafts</h2>
   <MapPicksChart v-if="Object.keys(mapCounts).length > 0" :drafts="mapCounts" />
   <MapBansChart v-if="Object.keys(mapCounts).length > 0" :drafts="mapCounts" />
@@ -145,3 +195,11 @@ const gameStats = computed(() => {
   <CivPlayedChart :games="gameStats" />
   <CivWinrateChart :games="gameStats" />
 </template>
+
+<style lang="css" module>
+.options {
+  :global(.grid) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+</style>
