@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, Ref, ref, watchEffect } from "vue";
+import { computed, Ref, ref, watch, watchEffect } from "vue";
 import { withBase, useData } from "vitepress";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
@@ -21,11 +21,17 @@ const drafts: Ref<Drafts> = ref({ civDrafts: [], mapDrafts: [] });
 const games: Ref<Game[]> = ref([]);
 const players = ref([]);
 const selectedBrackets = ref([...(params.value?.brackets ?? [])]);
+const selectedMaps: Ref<string[]> = ref([]);
 
 watchEffect(async () => {
-  drafts.value = await fetchData("drafts");
-  games.value = await fetchData("games");
-  players.value = await fetchData("players");
+  const promises = [
+    fetchData("drafts"),
+    fetchData("games"),
+    fetchData("players"),
+  ];
+  drafts.value = await promises[0];
+  games.value = await promises[1];
+  players.value = await promises[2];
 });
 
 async function fetchData(type: string) {
@@ -33,8 +39,12 @@ async function fetchData(type: string) {
   return response.json();
 }
 
+function mapName(map_id: string) {
+  return props.presetMapNames[map_id] ?? map_id;
+}
+
 function summarizeDrafts(drafts: Draft[]) {
-  const t = (id: string) => normalizeCivs(props.presetMapNames[id] ?? id);
+  const t = (id: string) => normalizeCivs(mapName(id));
   const filteredDrafts = drafts.filter((draft) =>
     selectedBrackets.value.includes(draft.bracket),
   );
@@ -87,6 +97,7 @@ const civCounts = computed(() => {
 const gameStats = computed(() => {
   return games.value
     .filter((game) => selectedBrackets.value.includes(game.bracket))
+    .filter((game) => selectedMaps.value.includes(game.map))
     .reduce<GameStats>(
       (stats, game) => {
         const winning = normalizeCivs(game.winningCiv);
@@ -140,12 +151,20 @@ const gameStats = computed(() => {
       },
     );
 });
+
+const allMaps = computed(() => {
+  return [...new Set(games.value.map((game) => game.map))].toSorted();
+});
+
+watch(allMaps, () => {
+  selectedMaps.value = [...allMaps.value];
+});
 </script>
 
 <template>
   <h1>{{ $params.name }} stats</h1>
   <hr />
-  <h5>Filters</h5>
+  <h5>Global Filters</h5>
   <div class="pico">
     <details :class="$style.options">
       <summary>Brackets</summary>
@@ -191,6 +210,43 @@ const gameStats = computed(() => {
   <CivPickChart :drafts="civCounts" />
   <CivBansChart :drafts="civCounts" />
   <h2>Games</h2>
+  <hr />
+  <h5>Game Filters</h5>
+  <div class="pico">
+    <details :class="$style.options">
+      <summary>Maps</summary>
+      <fieldset>
+        <fieldset class="grid">
+          <label v-for="mapName in allMaps" :id="mapName">
+            <input type="checkbox" :value="mapName" v-model="selectedMaps" />
+            {{ mapName }}
+          </label>
+        </fieldset>
+        <input
+          type="button"
+          class="outline"
+          value="Select all"
+          @click="selectedMaps = [...allMaps]"
+        />
+        <input
+          type="button"
+          class="outline secondary"
+          value="Deselect all"
+          @click="selectedMaps = []"
+        />
+      </fieldset>
+    </details>
+    <small>
+      <strong>Maps:</strong>
+      {{
+        selectedMaps.length == allMaps.length
+          ? "All"
+          : selectedMaps.length == 0
+            ? "None"
+            : selectedMaps.join(", ")
+      }}
+    </small>
+  </div>
   <MapPlayedChart :games="gameStats" />
   <CivPlayedChart :games="gameStats" />
   <CivWinrateChart :games="gameStats" />
@@ -199,7 +255,7 @@ const gameStats = computed(() => {
 <style lang="css" module>
 .options {
   :global(.grid) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 </style>
