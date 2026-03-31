@@ -35,8 +35,16 @@ watchEffect(async () => {
 });
 
 async function fetchData(type: string) {
-  const response = await fetch(withBase(`/${props.code}/${type}.json`));
-  return response.json();
+  const url = withBase(`/${props.code}/${type}.json`);
+  try {
+    const response = await fetch(url);
+    return response.json();
+  } catch (e: unknown) {
+    if (e instanceof TypeError) {
+      return {};
+    }
+    throw e;
+  }
 }
 
 function mapName(map_id: string) {
