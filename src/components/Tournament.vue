@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, Ref, ref, watch, watchEffect } from "vue";
-import { withBase, useData } from "vitepress";
+import { withBase, useData, inBrowser } from "vitepress";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
 import CivPickChart from "./CivPickChart.vue";
@@ -35,16 +35,12 @@ watchEffect(async () => {
 });
 
 async function fetchData(type: string) {
-  const url = withBase(`/${props.code}/${type}.json`);
-  try {
-    const response = await fetch(url);
-    return response.json();
-  } catch (e: unknown) {
-    if (e instanceof TypeError) {
-      return {};
-    }
-    throw e;
+  if (!inBrowser) {
+    return {};
   }
+  const url = withBase(`/${props.code}/${type}.json`);
+  const response = await fetch(url);
+  return response.json();
 }
 
 function mapName(map_id: string) {
