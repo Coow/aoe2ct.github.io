@@ -65,6 +65,7 @@ map_renames:
   SLL Mudflow: TTL5 Mudflow v3
   '[ALS15] African River - TTL5': TTL5 African River v3
   '[ALS15] Slopes - TTL5': TTL5 Slopes v2
+  '[ALS15] Stranded - TTL5': TTL5 Stranded v3
 naming:
   prefix: TTL5
   versioned: true

@@ -49,12 +49,9 @@ function mapName(map_id: string) {
 
 function summarizeDrafts(drafts: Draft[]) {
   const t = (id: string) => normalizeCivs(mapName(id));
-  const filteredDrafts = drafts.filter((draft) =>
-    selectedBrackets.value.includes(draft.bracket),
-  );
 
   let counts = Object.fromEntries(
-    filteredDrafts
+    drafts
       .flatMap((draft) => draft.draft)
       .map((draft) => [
         t(draft.map),
@@ -65,7 +62,7 @@ function summarizeDrafts(drafts: Draft[]) {
       ]),
   );
 
-  for (let draft of filteredDrafts) {
+  for (let draft of drafts) {
     let picks = Object.fromEntries(
       draft.draft.map((draft) => [t(draft.map), { admin: 0, player: 0 }]),
     );
@@ -85,75 +82,85 @@ function summarizeDrafts(drafts: Draft[]) {
   }
   return counts;
 }
+
+const filteredDrafts = computed(() => {
+  return {
+    mapDrafts: drafts.value?.mapDrafts
+      ? drafts.value.mapDrafts.filter((draft) =>
+          selectedBrackets.value.includes(draft.bracket),
+        )
+      : [],
+    civDrafts: drafts.value?.civDrafts
+      ? drafts.value.civDrafts.filter((draft) =>
+          selectedBrackets.value.includes(draft.bracket),
+        )
+      : [],
+  };
+});
 const mapCounts = computed(() => {
-  if (!drafts.value?.mapDrafts) {
-    return {};
-  }
-  return summarizeDrafts(drafts.value.mapDrafts);
+  return summarizeDrafts(filteredDrafts.value.mapDrafts);
 });
 const civCounts = computed(() => {
-  if (!drafts.value?.civDrafts) {
-    return {};
-  }
-  return summarizeDrafts(drafts.value.civDrafts);
+  return summarizeDrafts(filteredDrafts.value.civDrafts);
 });
 
-const gameStats = computed(() => {
-  return games.value
+const filteredGames = computed(() =>
+  games.value
     .filter((game) => selectedBrackets.value.includes(game.bracket))
-    .filter((game) => selectedMaps.value.includes(game.map))
-    .reduce<GameStats>(
-      (stats, game) => {
-        const winning = normalizeCivs(game.winningCiv);
-        const losing = normalizeCivs(game.losingCiv);
+    .filter((game) => selectedMaps.value.includes(game.map)),
+);
+const gameStats = computed(() => {
+  return filteredGames.value.reduce<GameStats>(
+    (stats, game) => {
+      const winning = normalizeCivs(game.winningCiv);
+      const losing = normalizeCivs(game.losingCiv);
 
-        return {
-          ...stats,
-          civs: {
-            ...stats.civs,
-            [winning]: {
-              ...stats.civs[winning],
-              wins: stats.civs[winning].wins + 1,
-              losses: stats.civs[winning].wins,
-              total: stats.civs[winning].total + 1,
-              winrate:
-                (stats.civs[winning].wins + 1) /
-                (stats.civs[winning].total + 1),
-            },
-            [losing]: {
-              ...stats.civs[losing],
-              wins: stats.civs[losing].wins,
-              losses: stats.civs[losing].wins + 1,
-              total: stats.civs[losing].total + 1,
-              winrate: stats.civs[losing].wins / (stats.civs[losing].total + 1),
-            },
+      return {
+        ...stats,
+        civs: {
+          ...stats.civs,
+          [winning]: {
+            ...stats.civs[winning],
+            wins: stats.civs[winning].wins + 1,
+            losses: stats.civs[winning].wins,
+            total: stats.civs[winning].total + 1,
+            winrate:
+              (stats.civs[winning].wins + 1) / (stats.civs[winning].total + 1),
           },
-          maps: {
-            ...stats.maps,
-            [game.map]: (stats.maps[game.map] ?? 0) + 1,
+          [losing]: {
+            ...stats.civs[losing],
+            wins: stats.civs[losing].wins,
+            losses: stats.civs[losing].wins + 1,
+            total: stats.civs[losing].total + 1,
+            winrate: stats.civs[losing].wins / (stats.civs[losing].total + 1),
           },
-        };
-      },
-      {
-        civs: Object.fromEntries(
-          allCivs.map((civ) => [
-            civ,
-            {
-              wins: 0,
-              losses: 0,
-              total: 0,
-              winrate: 0,
-              drafted:
-                civCounts.value[civ]?.admin?.pick +
-                civCounts.value[civ]?.player?.pick,
-            },
-          ]),
-        ),
-        maps: Object.fromEntries(
-          Object.values(props.presetMapNames).map((mapName) => [mapName, 0]),
-        ),
-      },
-    );
+        },
+        maps: {
+          ...stats.maps,
+          [game.map]: (stats.maps[game.map] ?? 0) + 1,
+        },
+      };
+    },
+    {
+      civs: Object.fromEntries(
+        allCivs.map((civ) => [
+          civ,
+          {
+            wins: 0,
+            losses: 0,
+            total: 0,
+            winrate: 0,
+            drafted:
+              civCounts.value[civ]?.admin?.pick +
+              civCounts.value[civ]?.player?.pick,
+          },
+        ]),
+      ),
+      maps: Object.fromEntries(
+        Object.values(props.presetMapNames).map((mapName) => [mapName, 0]),
+      ),
+    },
+  );
 });
 
 const allMaps = computed(() => {
@@ -208,12 +215,38 @@ watch(allMaps, () => {
       }}
     </small>
   </div>
-  <h2>Drafts</h2>
+  <div class="pico">
+    <hgroup>
+      <h2>Drafts</h2>
+      <p>
+        Showing
+        <strong
+          >{{ filteredDrafts.mapDrafts.length }} of
+          {{ drafts?.mapDrafts?.length ?? 0 }}</strong
+        >
+        sets,
+        <strong>{{ filteredGames.length }} of {{ games.length }}</strong> games
+      </p>
+    </hgroup>
+  </div>
   <MapPicksChart v-if="Object.keys(mapCounts).length > 0" :drafts="mapCounts" />
   <MapBansChart v-if="Object.keys(mapCounts).length > 0" :drafts="mapCounts" />
   <CivPickChart :drafts="civCounts" />
   <CivBansChart :drafts="civCounts" />
-  <h2>Games</h2>
+  <div class="pico">
+    <hgroup>
+      <h2>Games</h2>
+      <p>
+        Showing
+        <strong
+          >{{ filteredDrafts.mapDrafts.length }} of
+          {{ drafts?.mapDrafts?.length ?? 0 }}</strong
+        >
+        sets,
+        <strong>{{ filteredGames.length }} of {{ games.length }}</strong> games
+      </p>
+    </hgroup>
+  </div>
   <hr />
   <h5>Game Filters</h5>
   <div class="pico">
