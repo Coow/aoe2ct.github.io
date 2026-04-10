@@ -66,6 +66,8 @@ map_renames:
   '[ALS15] African River - TTL5': TTL5 African River v3
   '[ALS15] Slopes - TTL5': TTL5 Slopes v2
   '[ALS15] Stranded - TTL5': TTL5 Stranded v3
+  TCC2_African_River: TTL5 African River v3
+  '[ALS15] Dzimbabwe - TTL5': TTL5 Dzimbabwe v2
 naming:
   prefix: TTL5
   versioned: true
