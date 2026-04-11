@@ -4,12 +4,13 @@ import { withBase, useData, inBrowser } from "vitepress";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
 import CivPickChart from "./CivPickChart.vue";
-import { allCivs, Draft, Drafts, Game } from "../types";
+import { allCivs, Draft, Drafts, Game, Player } from "../types";
 import CivBansChart from "./CivBansChart.vue";
 import CivPlayedChart, { type GameStats } from "./CivPlayedChart.vue";
 import CivWinrateChart from "./CivWinrateChart.vue";
 import MapPlayedChart from "./MapPlayedChart.vue";
 import { normalizeCivs } from "../utils";
+import EApmChart from "./EApmChart.vue";
 
 const props = defineProps({
   code: { type: String, required: true },
@@ -19,7 +20,7 @@ const { params } = useData();
 
 const drafts: Ref<Drafts> = ref({ civDrafts: [], mapDrafts: [] });
 const games: Ref<Game[]> = ref([]);
-const players = ref([]);
+const players: Ref<Player[]> = ref([]);
 const selectedBrackets = ref([...(params.value?.brackets ?? [])]);
 const selectedMaps: Ref<string[]> = ref([]);
 
@@ -163,6 +164,14 @@ const gameStats = computed(() => {
   );
 });
 
+const filteredPlayers = computed(
+  () =>
+    players.value.filter((player) =>
+      selectedBrackets.value.includes(player.bracket),
+    ),
+  // .filter((player) => selectedMaps.value.includes(mapName(player.map))),
+);
+
 const allMaps = computed(() => {
   return [...new Set(games.value.map((game) => game.map))].toSorted();
 });
@@ -287,6 +296,7 @@ watch(allMaps, () => {
   <MapPlayedChart :games="gameStats" />
   <CivPlayedChart :games="gameStats" />
   <CivWinrateChart :games="gameStats" />
+  <EApmChart :players="filteredPlayers" />
 </template>
 
 <style lang="css" module>

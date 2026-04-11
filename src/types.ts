@@ -39,6 +39,35 @@ export type Game = {
   most_created_count: [number, number];
 };
 
+export type Player = {
+  set_id: string;
+  bracket: string;
+  duration: number;
+  str_duration: string;
+  map: string;
+  map_draft: string;
+  map_picks: string[];
+  map_bans: string[];
+  map_snipes: string[];
+  civ_draft: string;
+  civ_picks: string[];
+  civ_bans: string[];
+  civ_snipes: string[];
+  civ_steals: string[];
+  winner: boolean;
+  player: string;
+  opponent: string;
+  civ: string;
+  opponent_civ: string;
+  eapm: number;
+  feudal_time: string | null;
+  castle_time: string | null;
+  imperial_time: string | null;
+  vil_count: number;
+  most_created: string;
+  most_created_count: number;
+};
+
 export const allCivs = [
   "Britons",
   "Byzantines",
