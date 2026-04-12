@@ -25,6 +25,7 @@ export default {
     const dirContents = fs.readdirSync("./data");
     const tournaments = await Promise.all(
       dirContents.map(async (tournament) => {
+        const { mtime } = fs.statSync(`./public/${tournament}/drafts.json`);
         const info = yaml.load(
           fs.readFileSync(`./data/${tournament}/tournament.yaml`),
         ) as TournamentInfo;
@@ -49,6 +50,7 @@ export default {
             name: info.name,
             presetMapChoices,
             brackets: info.brackets,
+            lastUpdated: mtime,
           },
         };
       }),
