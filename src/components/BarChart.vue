@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { use, registerTheme } from "echarts/core";
-import "echarts/theme/rainbow.js";
-import { BarChart } from "echarts/charts";
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  GridComponent,
-} from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
-import type { ComposeOption } from "echarts/core";
 import type { BarSeriesOption } from "echarts/charts";
+import { BarChart } from "echarts/charts";
 import type {
+  GridComponentOption,
+  LegendComponentOption,
   TitleComponentOption,
   TooltipComponentOption,
-  LegendComponentOption,
-  GridComponentOption,
 } from "echarts/components";
-import VChart from "vue-echarts";
-import { useData } from "vitepress";
+import {
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+} from "echarts/components";
+import type { ComposeOption } from "echarts/core";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import "echarts/theme/rainbow.js";
 import { computed, ComputedRef } from "vue";
+import VChart from "vue-echarts";
+import { setupCharts, useThemeName } from "../charts";
 import { Counts } from "../types";
 
 use([
@@ -111,58 +111,9 @@ const {
   valueFormatter?: TooltipComponentOption["valueFormatter"];
   labelFormat?: string;
 }>();
-const { isDark } = useData();
-const axisTheme = {
-  axisLine: {
-    lineStyle: {
-      color: "#c6d0f5",
-    },
-  },
-  axisLabel: {
-    color: null,
-  },
-  splitLine: {
-    lineStyle: {
-      color: ["#E0E6F1"],
-    },
-  },
-  splitArea: {
-    areaStyle: {
-      color: ["rgba(250,250,250,0.2)", "rgba(210,219,238,0.2)"],
-    },
-  },
-  minorSplitLine: {
-    color: "#F4F7FD",
-  },
-};
-registerTheme("frappe", {
-  backgroundColor: "#303446",
-  subtitleColor: "#b5bfe2",
-  title: {
-    backgroundColor: "rgba(0,0,0,0)",
-    borderColor: "#babbf1",
-    textStyle: {
-      color: "#c6d0f5",
-    },
-    subtextStyle: {
-      color: "#b5bfe2",
-    },
-  },
-  color: [
-    "#8caaee", // Blue
-    "#e5c890", // Yellow
-    "#a6d189", // Green
-    "#e78284", // Red
-    "#a5adce", // Subtext 0
-    "#81c8be", // Teal
-    "#f4b8e4", // Pink
-  ],
-  valueAxis: { ...axisTheme },
-  timeAxis: { ...axisTheme },
-  logAxis: { ...axisTheme },
-  categoryAxis: { ...axisTheme },
-});
-const themeName = computed(() => (isDark.value ? "frappe" : "rainbow"));
+
+setupCharts();
+const themeName = useThemeName();
 
 const option: ComputedRef<EChartsOption> = computed(() => {
   const labels = counts.map(([map, _]) => map);

@@ -37,11 +37,11 @@ const props = defineProps<{ players: Player[] }>();
 const brackets = computed(() => [
   ...new Set(props.players.map((player) => player.bracket)),
 ]);
-const eapmData = computed(() =>
+const vilCounts = computed(() =>
   props.players
     .filter((player) => player.duration > 60 * 2 * 1000)
     .map((player) => [
-      player.eapm,
+      player.vil_count,
       player.bracket,
       player.player,
       `${player.set_id} on ${player.map} (${player.winner ? "W" : "L"})`,
@@ -63,9 +63,9 @@ const option: ComputedRef<EChartsOption> = computed(() => {
     },
     series: [
       {
-        name: "eAPM",
+        name: "Vils Queued",
         type: "scatter",
-        data: eapmData.value,
+        data: vilCounts.value,
         colorBy: "data",
         itemStyle: { opacity: 0.4 },
       },
