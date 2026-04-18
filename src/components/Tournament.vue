@@ -12,6 +12,7 @@ import MapPlayedChart from "./MapPlayedChart.vue";
 import { normalizeCivs } from "../utils";
 import EApmChart from "./EApmChart.vue";
 import VilCountChart from "./VilCountChart.vue";
+import MostCreatedChart from "./MostCreatedChart.vue";
 
 const props = defineProps({
   code: { type: String, required: true },
@@ -299,6 +300,7 @@ watch(allMaps, () => {
   <CivWinrateChart :games="gameStats" />
   <EApmChart :players="filteredPlayers" />
   <VilCountChart :players="filteredPlayers" />
+  <MostCreatedChart :players="filteredPlayers" />
 </template>
 
 <style lang="css" module>
