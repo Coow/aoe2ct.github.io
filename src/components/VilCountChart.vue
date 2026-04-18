@@ -49,7 +49,7 @@ const vilCounts = computed(() =>
 );
 const option: ComputedRef<EChartsOption> = computed(() => {
   return {
-    title: { text: "eAPM by bracket" },
+    title: { text: "Villagers queued by bracket" },
     xAxis: { type: "value" },
     yAxis: {
       type: "category",
