@@ -11,6 +11,9 @@ importers:
       '@catppuccin/vitepress':
         specifier: ^0.1.2
         version: 0.1.2(typescript@5.9.3)
+      '@date-fns/utc':
+        specifier: ^2.1.1
+        version: 2.1.1
       '@picocss/pico':
         specifier: ^2.1.1
         version: 2.1.1
@@ -63,6 +66,9 @@ packages:
     resolution: {integrity: sha512-dqhgo6U6GWbgh3McAgwemUC8Y2Aj48rRcQx/9iuPzBPAgo7NA3yi7ZcR0wolAENMmoOMAHBV+rz/5DfiGxtZLA==}
     peerDependencies:
       typescript: ^5.0.0
+
+  '@date-fns/utc@2.1.1':
+    resolution: {integrity: sha512-SlJDfG6RPeEX8wEVv6ZB3kak4MmbtyiI2qX/5zuKdordbrhB/iaJ58GVMZgJ6P1sJaM1gMgENFYYeg1JWrCFrA==}
 
   '@docsearch/css@4.6.2':
     resolution: {integrity: sha512-fH/cn8BjEEdM2nJdjNMHIvOVYupG6AIDtFVDgIZrNzdCSj4KXr9kd+hsehqsNGYjpUjObeKYKvgy/IwCb1jZYQ==}
@@ -822,6 +828,8 @@ snapshots:
   '@catppuccin/vitepress@0.1.2(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
+
+  '@date-fns/utc@2.1.1': {}
 
   '@docsearch/css@4.6.2': {}
 

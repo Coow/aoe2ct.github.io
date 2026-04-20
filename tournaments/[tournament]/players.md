@@ -10,6 +10,5 @@ import Tournament from "../../src/components/Tournament.vue";
 import { parseJSON, format } from "date-fns";
 </script>
 
-Hello, player stats for {{ $params.name }}
 <Tournament :code="$params.tournament" :preset-map-names="$params.presetMapChoices" page="players" />
 Last updated: {{ format(parseJSON($params.lastUpdated), "PP HH:mm:ss O") }}

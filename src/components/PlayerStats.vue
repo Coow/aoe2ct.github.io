@@ -3,6 +3,15 @@ import { useData } from "vitepress";
 import { computed, Ref, ref, watchEffect } from "vue";
 import { Player } from "../types";
 import { fetchData } from "../utils";
+import PlayerSelectionTable from "./PlayerSelectionTable.vue";
+import {
+  format,
+  formatDistance,
+  formatDuration,
+  fromUnixTime,
+  intervalToDuration,
+} from "date-fns";
+import { UTCDate } from "@date-fns/utc";
 
 const props = defineProps({
   code: { type: String, required: true },
@@ -13,6 +22,7 @@ const { params } = useData();
 const players: Ref<Player[]> = ref([]);
 const playerFilter = ref("");
 const selectedBrackets = ref([...(params.value?.brackets ?? [])]);
+const selectedPlayer = ref("");
 
 watchEffect(async () => {
   players.value = await fetchData(props.code, "players");
@@ -48,17 +58,47 @@ const sortedPlayers = computed(() => {
     );
   return Object.entries(playerGames).map(([_playerName, games]) => games[0]);
 });
+
+const playerGames = computed(() =>
+  players.value.filter((player) => player.player == selectedPlayer.value),
+);
+
+const gameStats = computed(() => {
+  const setsPlayed = playerGames.value.reduce((sets, game) => {
+    return sets.add(game.set_id);
+  }, new Set());
+  const durations = playerGames.value.map((game) => game.duration);
+  const totalDuration = durations.reduce((sum, v) => sum + v);
+  const eapm = playerGames.value.map((game) => game.eapm);
+  return {
+    games: playerGames.value.length,
+    sets: setsPlayed.size,
+    victories: playerGames.value.filter((game) => game.winner).length,
+    gameTime: totalDuration,
+    shortest: Math.min.apply(null, durations),
+    longest: Math.max.apply(null, durations),
+    averageGameTime: totalDuration / durations.length,
+    minEapm: Math.min.apply(null, eapm),
+    maxEapm: Math.max.apply(null, eapm),
+    averageEapm:
+      Math.round((eapm.reduce((a, b) => a + b) / eapm.length) * 100) / 100,
+  };
+});
+
+function durationToString(duration: number) {
+  return format(new UTCDate(fromUnixTime(duration / 1000)), "HH:mm:ss");
+}
 </script>
 
 <template>
-  <div class="pico">
+  <div class="pico" v-if="!selectedPlayer">
     <h5>Find Players</h5>
     <input type="search" placeholder="Search player" v-model="playerFilter" />
     <details :class="$style.options">
       <summary>Brackets</summary>
       <fieldset>
         <fieldset class="grid">
-          <label v-for="bracket in $params.brackets" :id="bracket">
+          <label v-for="bracket in params?.brackets" :id="bracket">
             <input
               type="checkbox"
               :value="bracket"
@@ -71,7 +111,7 @@ const sortedPlayers = computed(() => {
           type="button"
           class="outline"
           value="Select all"
-          @click="selectedBrackets = $params.brackets"
+          @click="selectedBrackets = params?.brackets"
         />
         <input
           type="button"
@@ -87,59 +127,89 @@ const sortedPlayers = computed(() => {
     </p>
 
     <div class="grid">
+      <PlayerSelectionTable
+        v-if="sortedPlayers.length <= 10"
+        :players="sortedPlayers"
+        @selectPlayer="selectedPlayer = $event"
+      />
+      <PlayerSelectionTable
+        v-if="sortedPlayers.length > 10"
+        :players="sortedPlayers.slice(0, sortedPlayers.length / 3)"
+        @selectPlayer="selectedPlayer = $event"
+      />
+      <PlayerSelectionTable
+        v-if="sortedPlayers.length > 10"
+        :players="
+          sortedPlayers.slice(
+            sortedPlayers.length / 3,
+            (sortedPlayers.length / 3) * 2,
+          )
+        "
+        @selectPlayer="selectedPlayer = $event"
+      />
+      <PlayerSelectionTable
+        v-if="sortedPlayers.length > 10"
+        :players="sortedPlayers.slice((sortedPlayers.length / 3) * 2)"
+        @selectPlayer="selectedPlayer = $event"
+      />
+    </div>
+  </div>
+  <div v-if="selectedPlayer">
+    <div class="pico">
+      <button @click="selectedPlayer = ''">< Go back</button>
+    </div>
+    <br />
+    <h1>Stats for {{ selectedPlayer }}</h1>
+    <div class="pico">
       <table class="striped">
-        <thead>
-          <tr>
-            <th width="150">Bracket</th>
-            <th width="300">Name</th>
-          </tr>
-        </thead>
         <tbody>
-          <tr
-            v-for="player in sortedPlayers.slice(0, sortedPlayers.length / 3)"
-            :key="player.player"
-          >
-            <td>{{ player.bracket }}</td>
-            <td>{{ player.player }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="striped">
-        <thead>
           <tr>
-            <th width="150">Bracket</th>
-            <th width="300">Name</th>
+            <td>Sets played</td>
+            <td>{{ gameStats.sets }}</td>
           </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="player in sortedPlayers.slice(
-              sortedPlayers.length / 3,
-              (sortedPlayers.length / 3) * 2,
-            )"
-            :key="player.player"
-          >
-            <td>{{ player.bracket }}</td>
-            <td>{{ player.player }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="striped">
-        <thead>
           <tr>
-            <th width="150">Bracket</th>
-            <th width="300">Name</th>
+            <td>Games played</td>
+            <td>{{ gameStats.games }}</td>
           </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="player in sortedPlayers.slice(
-              (sortedPlayers.length / 3) * 2,
-            )"
-            :key="player.player"
-          >
-            <td>{{ player.bracket }}</td>
-            <td>{{ player.player }}</td>
+          <tr>
+            <td>Average games per set</td>
+            <td>{{ gameStats.games / gameStats.sets }}</td>
+          </tr>
+          <tr>
+            <td>Victories/Losses</td>
+            <td>
+              {{ gameStats.victories }}/{{
+                gameStats.games - gameStats.victories
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>Total game time</td>
+            <td>{{ durationToString(gameStats.gameTime) }}</td>
+          </tr>
+          <tr>
+            <td>Shortest game</td>
+            <td>{{ durationToString(gameStats.shortest) }}</td>
+          </tr>
+          <tr>
+            <td>Longest game</td>
+            <td>{{ durationToString(gameStats.longest) }}</td>
+          </tr>
+          <tr>
+            <td>Average game length</td>
+            <td>{{ durationToString(gameStats.averageGameTime) }}</td>
+          </tr>
+          <tr>
+            <td>Min eAPM</td>
+            <td>{{ gameStats.minEapm }}</td>
+          </tr>
+          <tr>
+            <td>Max eAPM</td>
+            <td>{{ gameStats.maxEapm }}</td>
+          </tr>
+          <tr>
+            <td>Average eAPM</td>
+            <td>{{ gameStats.averageEapm }}</td>
           </tr>
         </tbody>
       </table>
