@@ -97,8 +97,15 @@ const mapCounts = computed(() => {
     ]),
   );
 
+  const seenDrafts = new Set();
+
   return playerGames.value.reduce((c, game) => {
     const newCounts = { ...c };
+    if (seenDrafts.has(game.map_draft)) {
+      return newCounts;
+    }
+
+    seenDrafts.add(game.map_draft);
     for (let map_id of game.map_picks) {
       newCounts[mapName(map_id)].player.pick += 1;
     }
@@ -123,8 +130,20 @@ const civCounts = computed(() => {
     ]),
   );
 
+  const seenDrafts = new Set();
+
   return playerGames.value.reduce((c, game) => {
     const newCounts = { ...c };
+    if (seenDrafts.has(game.civ_draft)) {
+      return newCounts;
+    }
+    console.log({
+      name: game.player,
+      draft: game.civ_draft,
+      picks: game.civ_picks,
+    });
+
+    seenDrafts.add(game.civ_draft);
     for (let civ_id of game.civ_picks) {
       newCounts[normalizeCivs(civ_id)].player.pick += 1;
     }
