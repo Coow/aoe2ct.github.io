@@ -4,13 +4,7 @@ import { computed, Ref, ref, watchEffect } from "vue";
 import { Player } from "../types";
 import { fetchData } from "../utils";
 import PlayerSelectionTable from "./PlayerSelectionTable.vue";
-import {
-  format,
-  formatDistance,
-  formatDuration,
-  fromUnixTime,
-  intervalToDuration,
-} from "date-fns";
+import { format, fromUnixTime } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
 const props = defineProps({
@@ -87,6 +81,11 @@ const gameStats = computed(() => {
 
 function durationToString(duration: number) {
   return format(new UTCDate(fromUnixTime(duration / 1000)), "HH:mm:ss");
+}
+
+function civIconName(name: string) {
+  if (name == "Maya") return "mayans";
+  return name.toLowerCase();
 }
 </script>
 
@@ -178,9 +177,8 @@ function durationToString(duration: number) {
           <tr>
             <td>Victories/Losses</td>
             <td>
-              {{ gameStats.victories }}/{{
-                gameStats.games - gameStats.victories
-              }}
+              {{ gameStats.victories }}W
+              {{ gameStats.games - gameStats.victories }}L
             </td>
           </tr>
           <tr>
@@ -210,6 +208,80 @@ function durationToString(duration: number) {
           <tr>
             <td>Average eAPM</td>
             <td>{{ gameStats.averageEapm }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>{{ selectedPlayer }}'s games</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Opponent</th>
+            <th>Drafts</th>
+            <th>Map</th>
+            <th>Player civ</th>
+            <th>Opponent civ</th>
+            <th>Winner</th>
+            <th>Duration</th>
+            <th>Age up timings</th>
+            <th>Vil count</th>
+            <th>Most created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="game in playerGames" :key="game.set_id + game.map">
+            <td>{{ game.opponent }}</td>
+            <td>
+              <a
+                :href="`https://aoe2cm.net/draft/${game.map_draft}`"
+                target="_blank"
+              >
+                Map </a
+              ><br />
+              <a
+                :href="`https://aoe2cm.net/draft/${game.civ_draft}`"
+                target="_blank"
+              >
+                Civ
+              </a>
+            </td>
+            <td>{{ game.map }}</td>
+            <td>
+              <a
+                :href="`https://aoe2techtree.net/#${civIconName(game.civ)}`"
+                target="_blank"
+              >
+                <img
+                  :src="`https://aoe2techtree.net/img/Civs/${civIconName(game.civ)}.png`"
+                  :alt="game.civ"
+                  :title="game.civ"
+                  width="32"
+                  height="32"
+                />
+              </a>
+            </td>
+            <td>
+              <a
+                :href="`https://aoe2techtree.net/#${game.opponent_civ}`"
+                target="_blank"
+              >
+                <img
+                  :src="`https://aoe2techtree.net/img/Civs/${civIconName(game.opponent_civ)}.png`"
+                  :alt="game.opponent_civ"
+                  :title="game.opponent_civ"
+                  width="32"
+                  height="32"
+                />
+              </a>
+            </td>
+            <td>{{ game.winner ? game.player : game.opponent }}</td>
+            <td>{{ durationToString(game.duration) }}</td>
+            <td>
+              F: {{ game.feudal_time }}<br />
+              C: {{ game.castle_time }}<br />
+              I: {{ game.imperial_time }}
+            </td>
+            <td>{{ game.vil_count }}</td>
+            <td>{{ game.most_created }} ({{ game.most_created_count }})</td>
           </tr>
         </tbody>
       </table>
