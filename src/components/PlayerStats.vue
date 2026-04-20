@@ -6,6 +6,8 @@ import { fetchData } from "../utils";
 import PlayerSelectionTable from "./PlayerSelectionTable.vue";
 import { format, fromUnixTime } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
+import MapPicksChart from "./MapPicksChart.vue";
+import MapBansChart from "./MapBansChart.vue";
 
 const props = defineProps({
   code: { type: String, required: true },
@@ -77,6 +79,35 @@ const gameStats = computed(() => {
     averageEapm:
       Math.round((eapm.reduce((a, b) => a + b) / eapm.length) * 100) / 100,
   };
+});
+
+function mapName(name: string) {
+  return props.presetMapNames[name] ?? name;
+}
+const mapCounts = computed(() => {
+  const counts = Object.fromEntries(
+    Object.values(props.presetMapNames).map((name) => [
+      name,
+      {
+        player: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
+        admin: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
+      },
+    ]),
+  );
+
+  return playerGames.value.reduce((c, game) => {
+    const newCounts = { ...c };
+    for (let map_id of game.map_picks) {
+      newCounts[mapName(map_id)].player.pick += 1;
+    }
+    for (let map_id of game.map_bans) {
+      newCounts[mapName(map_id)].player.ban += 1;
+    }
+    for (let map_id of game.map_snipes) {
+      newCounts[mapName(map_id)].player.snipe.player += 1;
+    }
+    return newCounts;
+  }, counts);
 });
 
 function durationToString(duration: number) {
@@ -211,6 +242,14 @@ function civIconName(name: string) {
           </tr>
         </tbody>
       </table>
+      <MapPicksChart
+        v-if="Object.keys(mapCounts).length > 0"
+        :drafts="mapCounts"
+      />
+      <MapBansChart
+        v-if="Object.keys(mapCounts).length > 0"
+        :drafts="mapCounts"
+      />
       <h2>{{ selectedPlayer }}'s games</h2>
       <table>
         <thead>
@@ -228,7 +267,14 @@ function civIconName(name: string) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="game in playerGames" :key="game.set_id + game.map">
+          <tr
+            v-for="game in playerGames"
+            :key="game.set_id + game.map"
+            :class="{
+              [$style.win]: game.winner,
+              [$style.loss]: !game.winner,
+            }"
+          >
             <td>{{ game.opponent }}</td>
             <td>
               <a
@@ -306,5 +352,13 @@ function civIconName(name: string) {
   input[type="search"] {
     margin-top: 2rem;
   }
+}
+
+.win td {
+  background-color: var(--vp-c-green-3);
+}
+
+.loss td {
+  background-color: var(--vp-c-red-3);
 }
 </style>
