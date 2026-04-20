@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useData } from "vitepress";
 import { computed, Ref, ref, watchEffect } from "vue";
-import { Player } from "../types";
-import { fetchData } from "../utils";
+import { allCivs, Player } from "../types";
+import { fetchData, normalizeCivs } from "../utils";
 import PlayerSelectionTable from "./PlayerSelectionTable.vue";
 import { format, fromUnixTime } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
+import CivPickChart from "./CivPickChart.vue";
+import CivBansChart from "./CivBansChart.vue";
 
 const props = defineProps({
   code: { type: String, required: true },
@@ -105,6 +107,35 @@ const mapCounts = computed(() => {
     }
     for (let map_id of game.map_snipes) {
       newCounts[mapName(map_id)].player.snipe.player += 1;
+    }
+    return newCounts;
+  }, counts);
+});
+
+const civCounts = computed(() => {
+  const counts = Object.fromEntries(
+    allCivs.map((name) => [
+      name,
+      {
+        player: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
+        admin: { pick: 0, ban: 0, snipe: { player: 0, admin: 0 }, steal: 0 },
+      },
+    ]),
+  );
+
+  return playerGames.value.reduce((c, game) => {
+    const newCounts = { ...c };
+    for (let civ_id of game.civ_picks) {
+      newCounts[normalizeCivs(civ_id)].player.pick += 1;
+    }
+    for (let civ_id of game.civ_bans) {
+      newCounts[normalizeCivs(civ_id)].player.ban += 1;
+    }
+    for (let civ_id of game.civ_snipes) {
+      newCounts[normalizeCivs(civ_id)].player.snipe.player += 1;
+    }
+    for (let civ_id of game.civ_steals) {
+      newCounts[normalizeCivs(civ_id)].player.steal += 1;
     }
     return newCounts;
   }, counts);
@@ -250,6 +281,8 @@ function civIconName(name: string) {
         v-if="Object.keys(mapCounts).length > 0"
         :drafts="mapCounts"
       />
+      <CivPickChart :drafts="civCounts" />
+      <CivBansChart :drafts="civCounts" />
       <h2>{{ selectedPlayer }}'s games</h2>
       <table>
         <thead>
