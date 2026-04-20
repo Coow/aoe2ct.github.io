@@ -141,6 +141,17 @@ const civCounts = computed(() => {
   }, counts);
 });
 
+const bracketEapm = computed(() => {
+  if (playerGames.value.length == 0) {
+    return [];
+  }
+
+  const bracketName = playerGames.value[0].bracket;
+  return players.value
+    .filter((game) => game.bracket == bracketName)
+    .map((game) => game.eapm);
+});
+
 function durationToString(duration: number) {
   return format(new UTCDate(fromUnixTime(duration / 1000)), "HH:mm:ss");
 }

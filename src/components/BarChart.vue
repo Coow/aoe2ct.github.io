@@ -157,22 +157,6 @@ const option: ComputedRef<EChartsOption> = computed(() => {
       type: horizontal ? "category" : "value",
       data: horizontal ? labels : undefined,
     },
-    // color: [
-    //   // "#e78284", // Red
-    //   // "#a6d189", // Green
-    //   // "#e5c890", // Yellow
-    //   // "#8caaee", // Blue
-    //   // "#f4b8e4", // Pink
-    //   // "#81c8be", // Teal
-    //   // "#f2d5cf", // Rosewater
-    //   // "#85c1dc", // Sapphire
-    //   // "#ea999c", // Maroon
-    //   // "#99d1db", // Sky
-    //   // "#ca9ee6", // Mauve
-    //   // "#ef9f76", // Peach
-    //   // "#babbf1", // Lavender
-    //   // "#eebebe", // Flamingo
-    // ],
     series: series.map((series) => ({
       name: series.title,
       type: "bar",
