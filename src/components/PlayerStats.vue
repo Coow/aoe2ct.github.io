@@ -137,11 +137,6 @@ const civCounts = computed(() => {
     if (seenDrafts.has(game.civ_draft)) {
       return newCounts;
     }
-    console.log({
-      name: game.player,
-      draft: game.civ_draft,
-      picks: game.civ_picks,
-    });
 
     seenDrafts.add(game.civ_draft);
     for (let civ_id of game.civ_picks) {
@@ -254,6 +249,10 @@ function civIconName(name: string) {
     <div class="pico">
       <table class="striped">
         <tbody>
+          <tr>
+            <td>Bracket</td>
+            <td>{{ playerGames[0].bracket }}</td>
+          </tr>
           <tr>
             <td>Sets played</td>
             <td>{{ gameStats.sets }}</td>
