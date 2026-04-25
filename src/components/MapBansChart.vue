@@ -10,13 +10,23 @@ const bans = computed(() =>
   ),
 );
 
+const totalBanCount = computed(() => {
+  return bans.value.reduce((total, [_, counts]) => {
+    return total + counts.admin.ban + counts.player.ban;
+  }, 0);
+});
+
 const series: SeriesParam[] = [
   { type: "playerBans", title: "Player bans" },
   { type: "adminBans", title: "Admin bans" },
 ];
 </script>
 <template>
-  <div>
-    <BarChart title="Map bans" yAxis="Bans" :counts="bans" :series="series" />
-  </div>
+  <BarChart
+    v-if="totalBanCount > 0"
+    title="Map bans"
+    yAxis="Bans"
+    :counts="bans"
+    :series="series"
+  />
 </template>
