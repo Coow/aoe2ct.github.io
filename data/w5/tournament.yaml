@@ -21,7 +21,13 @@ maps:
   - MTW5 Skukuza
   - MTW5 Steppe
   - MTW5 Te Fiti
-brackets: []
+brackets:
+  - Qualifier 1 A
+  - Qualifier 1 B
+  - Qualifier 1 C
+  - Qualifier 1 D
+  - Qualifier 1 E
+  - Qualifier 1 F
 presets:
   maps:
     bo3:
