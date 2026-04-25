@@ -1,0 +1,43 @@
+name: MembTV Warlords V
+maps:
+- MTW5 Arena
+- MTW5 Basmo
+- MTW5 Black Forest
+- MTW5 Border Dispute
+- MTW5 Cenotes
+- MTW5 Cliffbound
+- MTW5 Crossroads
+- MTW5 Crownwood
+- MTW5 Isthmus
+- MTW5 Kilimanjaro
+- MTW5 Lowland
+- MTW5 Marshwood
+- MTW5 Morass
+- MTW5 Murkwood
+- MTW5 Pacific Islands
+- MTW5 Ring Nomad
+- MTW5 Seasons
+- MTW5 Shorelines
+- MTW5 Skukuza
+- MTW5 Steppe
+- MTW5 Te Fiti
+brackets: []
+presets:
+  maps:
+    bo3:
+      - NRvrp
+      - hSLbe
+    bo5: 
+      - DPnkE
+      - DrthJ
+    bo7:
+      - sqBgC
+      - sQkbu
+  civs:
+    bo3: eBVth
+    bo5: CFLxN
+    bo7: wTAho
+    bo9: NuKcD
+naming:
+  prefix: MTW5
+  versioned: false
