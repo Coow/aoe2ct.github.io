@@ -37,15 +37,18 @@ const props = defineProps<{ players: Player[] }>();
 const brackets = computed(() => [
   ...new Set(props.players.map((player) => player.bracket)),
 ]);
-const vilCounts = computed(() =>
+const unitCounts = computed(() =>
   props.players
     .filter((player) => player.duration > 60 * 2 * 1000)
     .map((player) => [
-      player.most_created_count,
+      Math.min(800, player.most_created_count),
       player.bracket,
-      player.most_created,
-      player.player,
-      `${player.set_id} on ${player.map} (${player.winner ? "W" : "L"})`,
+      {
+        name: player.most_created,
+        player: player.player,
+        series: `${player.set_id} on ${player.map} (${player.winner ? "W" : "L"})`,
+        actual: player.most_created_count,
+      },
     ]),
 );
 const option: ComputedRef<EChartsOption> = computed(() => {
@@ -59,16 +62,19 @@ const option: ComputedRef<EChartsOption> = computed(() => {
     },
     tooltip: {
       show: true,
-      formatter: (params) =>
-        `${format.encodeHTML(params.value[3])}<br>` +
-        `${format.encodeHTML(params.value[2])}: <b>${params.value[0]}</b><br>` +
-        `${format.encodeHTML(params.value[4])}`,
+      formatter: (params) => {
+        return (
+          `${format.encodeHTML(params.value[2].player)}<br>` +
+          `${format.encodeHTML(params.value[2].name)}: <b>${params.value[2].actual}</b><br>` +
+          `${format.encodeHTML(params.value[2].series)}`
+        );
+      },
     },
     series: [
       {
-        name: "Vils Queued",
+        name: "Units Queued",
         type: "scatter",
-        data: vilCounts.value,
+        data: unitCounts.value,
         colorBy: "data",
         itemStyle: { opacity: 0.4 },
       },
