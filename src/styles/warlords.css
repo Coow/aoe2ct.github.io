@@ -4,7 +4,6 @@
 }
 
 :root {
-  --ifm-container-width-xl: 100wv;
   --ifm-table-border-width: 0;
   --ifm-table-head-color: whitesmoke;
   --ifm-table-cell-color: white;
@@ -27,7 +26,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 10px 42px;
   /* Essentially just transform the tables to be smaller, very hacky */
-  zoom: 0.9;
+  zoom: 0.7;
   margin-left: 82px;
   margin-right: 82px;
 }
@@ -108,7 +107,6 @@ body {
 table.civs {
   border-collapse: collapse;
   background-color: var(--table-c-bg);
-  border-radius: 1rem;
   display: table;
 }
 
