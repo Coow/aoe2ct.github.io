@@ -1,0 +1,185 @@
+@font-face {
+  font-family: Muara;
+  src: url(/Muara.ttf);
+}
+
+:root {
+  --ifm-container-width-xl: 100wv;
+  --ifm-table-border-width: 0;
+  --ifm-table-head-color: whitesmoke;
+  --ifm-table-cell-color: white;
+  --ifm-table-cell-padding: 1px 4px 1px 1px;
+}
+
+:global(.col--8) {
+  --ifm-col-width: calc(12 / 12 * 100%);
+}
+
+body {
+  --vp-c-bg: white;
+  --vp-font-family-base: Muara;
+  --table-c-bg: oklch(0.188 0.04 37.48);
+  --table-odd-c-bg: oklch(from var(--table-c-bg) calc(l + 0.2) c h);
+}
+
+.statsTable {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px 42px;
+  /* Essentially just transform the tables to be smaller, very hacky */
+  zoom: 0.9;
+  margin-left: 82px;
+  margin-right: 82px;
+}
+
+.statsTable h2 {
+  text-align: center;
+  color: white;
+}
+
+.finalistCard {
+  display: grid;
+  grid-template-areas:
+    "image image"
+    "player games"
+    "civ civ";
+  zoom: 0.78;
+  margin-left: 82px;
+  margin-right: 82px;
+  gap: 1.5em;
+}
+
+.finalistTables {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.finalistTables .civs td {
+  /* transform: skew(-20deg); */
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+.finalistTables .civs td.civ {
+  padding: 0.6rem 1.5rem;
+}
+
+.finalistTables .civ-cell {
+  width: 350px;
+}
+
+.playerImage {
+  grid-area: image;
+  text-align: center;
+}
+
+.playerStats {
+  grid-area: player;
+}
+
+.gamesStats {
+  grid-area: games;
+}
+
+.civStats {
+  grid-area: civ;
+}
+
+.player-color {
+  border: 1px solid black;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
+  color: black;
+  margin: 0.3rem;
+  font-size: 1rem;
+  zoom: 1.3;
+}
+
+.player-color-1 {
+  background-color: #00f;
+}
+
+.player-color-4 {
+  background-color: #ff0;
+}
+
+table.civs {
+  border-collapse: collapse;
+  background-color: var(--table-c-bg);
+  border-radius: 1rem;
+  display: table;
+}
+
+tbody tr:nth-child(2n + 1) {
+  background-color: var(--table-odd-c-bg);
+}
+
+.civs th {
+  text-align: center;
+  letter-spacing: 0.05em;
+  font-size: 1.25rem;
+  padding: 0.5rem 1.5rem;
+}
+
+.civs th.civ {
+  text-align: left;
+}
+
+.civs th.adminBans {
+  font-size: 1rem;
+  width: 40px;
+}
+
+.civs td {
+  font-size: 1.75rem;
+  text-align: center;
+  position: relative;
+}
+
+.civs td.civ {
+  padding: 0.6rem 1.5rem;
+  text-align: left;
+}
+
+.civs td.wins {
+  color: #22c55e;
+}
+
+.civs td.losses {
+  color: #ef4444;
+}
+
+.civs td::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: 0;
+  width: 2px;
+  height: 80%;
+  background: linear-gradient(to bottom, transparent, #8a8a8a, transparent);
+}
+
+.civs td:last-child::after {
+  display: none;
+}
+
+.civ-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 200px;
+}
+
+.civ-cell img {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+/* This is to display the row */
+.extraInfo {
+  display: inline-block;
+  height: 56px;
+}

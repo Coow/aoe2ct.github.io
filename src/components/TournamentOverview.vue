@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, Ref, ref, watch, watchEffect } from "vue";
-import { withBase, useData, inBrowser } from "vitepress";
+import { useData } from "vitepress";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
 import CivPickChart from "./CivPickChart.vue";

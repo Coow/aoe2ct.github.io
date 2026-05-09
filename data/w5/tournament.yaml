@@ -1,47 +1,47 @@
 name: MembTV Warlords V
 maps:
-- MTW5 African Clearing
-- MTW5 Arena
-- MTW5 Basmo
-- MTW5 Black Forest
-- MTW5 Border Dispute
-- MTW5 Cenotes
-- MTW5 Cliffbound
-- MTW5 Crossroads
-- MTW5 Crownwood
-- MTW5 Isthmus
-- MTW5 Immersion
-- MTW5 Kilimanjaro
-- MTW5 Lowland
-- MTW5 Marshwood
-- MTW5 Morass
-- MTW5 Murkwood
-- MTW5 Pacific Islands
-- MTW5 Ring Nomad
-- MTW5 Seasons
-- MTW5 Shorelines
-- MTW5 Skukuza
-- MTW5 Steppe
-- MTW5 Te Fiti
+  - MTW5 African Clearing
+  - MTW5 Arena
+  - MTW5 Basmo
+  - MTW5 Black Forest
+  - MTW5 Border Dispute
+  - MTW5 Cenotes
+  - MTW5 Cliffbound
+  - MTW5 Crossroads
+  - MTW5 Crownwood
+  - MTW5 Isthmus
+  - MTW5 Immersion
+  - MTW5 Kilimanjaro
+  - MTW5 Lowland
+  - MTW5 Marshwood
+  - MTW5 Morass
+  - MTW5 Murkwood
+  - MTW5 Pacific Islands
+  - MTW5 Ring Nomad
+  - MTW5 Seasons
+  - MTW5 Shorelines
+  - MTW5 Skukuza
+  - MTW5 Steppe
+  - MTW5 Te Fiti
 brackets:
-- Qualifier 1
-- Qualifier 2 A
-- Qualifier 2 B
-- Qualifier 2 C
-- Qualifier 2 D
-- Qualifier 2 E
-- Qualifier 2 F
+  - Qualifier 1
+  - Qualifier 2 A
+  - Qualifier 2 B
+  - Qualifier 2 C
+  - Qualifier 2 D
+  - Qualifier 2 E
+  - Qualifier 2 F
 presets:
   maps:
     bo3:
-    - NRvrp
-    - hSLbe
+      - NRvrp
+      - hSLbe
     bo5:
-    - DPnkE
-    - DrthJ
+      - DrthJ
+      - DPnkE
     bo7:
-    - sqBgC
-    - sQkbu
+      - sQkbu
+      - sqBgC
   civs:
     bo3: eBVth
     bo5: CFLxN
