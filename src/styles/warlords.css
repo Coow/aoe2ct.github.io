@@ -3,181 +3,183 @@
   src: url(/Muara.ttf);
 }
 
-:root {
-  --ifm-table-border-width: 0;
-  --ifm-table-head-color: whitesmoke;
-  --ifm-table-cell-color: white;
-  --ifm-table-cell-padding: 1px 4px 1px 1px;
-}
-
-:global(.col--8) {
-  --ifm-col-width: calc(12 / 12 * 100%);
-}
-
-body {
+body:has(.warlords) {
   --vp-c-bg: white;
   --vp-font-family-base: Muara;
   --table-c-bg: oklch(0.188 0.04 37.48);
   --table-odd-c-bg: oklch(from var(--table-c-bg) calc(l + 0.2) c h);
 }
 
-.statsTable {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 10px 42px;
-  /* Essentially just transform the tables to be smaller, very hacky */
-  zoom: 0.7;
-  margin-left: 82px;
-  margin-right: 82px;
-}
+.warlords {
+  :root {
+    --ifm-table-border-width: 0;
+    --ifm-table-head-color: whitesmoke;
+    --ifm-table-cell-color: white;
+    --ifm-table-cell-padding: 1px 4px 1px 1px;
+  }
 
-.statsTable h2 {
-  text-align: center;
-  color: white;
-}
+  :global(.col--8) {
+    --ifm-col-width: calc(12 / 12 * 100%);
+  }
 
-.finalistCard {
-  display: grid;
-  grid-template-areas:
-    "image image"
-    "player games"
-    "civ civ";
-  zoom: 0.78;
-  margin-left: 82px;
-  margin-right: 82px;
-  gap: 1.5em;
-}
+  .statsTable {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px 42px;
+    /* Essentially just transform the tables to be smaller, very hacky */
+    zoom: 0.7;
+    margin-left: 82px;
+    margin-right: 82px;
+  }
 
-.finalistTables {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+  .statsTable h2 {
+    text-align: center;
+    color: white;
+  }
 
-.finalistTables .civs td {
-  /* transform: skew(-20deg); */
-  text-align: left;
-  padding-left: 1.5rem;
-}
+  .finalistCard {
+    display: grid;
+    grid-template-areas:
+      "image image"
+      "player games"
+      "civ civ";
+    zoom: 0.78;
+    margin-left: 82px;
+    margin-right: 82px;
+    gap: 1.5em;
+  }
 
-.finalistTables .civs td.civ {
-  padding: 0.6rem 1.5rem;
-}
+  .finalistTables {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-.finalistTables .civ-cell {
-  width: 350px;
-}
+  .finalistTables .civs td {
+    /* transform: skew(-20deg); */
+    text-align: left;
+    padding-left: 1.5rem;
+  }
 
-.playerImage {
-  grid-area: image;
-  text-align: center;
-}
+  .finalistTables .civs td.civ {
+    padding: 0.6rem 1.5rem;
+  }
 
-.playerStats {
-  grid-area: player;
-}
+  .finalistTables .civ-cell {
+    width: 350px;
+  }
 
-.gamesStats {
-  grid-area: games;
-}
+  .playerImage {
+    grid-area: image;
+    text-align: center;
+  }
 
-.civStats {
-  grid-area: civ;
-}
+  .playerStats {
+    grid-area: player;
+  }
 
-.player-color {
-  border: 1px solid black;
-  width: 2rem;
-  height: 2rem;
-  text-align: center;
-  color: black;
-  margin: 0.3rem;
-  font-size: 1rem;
-  zoom: 1.3;
-}
+  .gamesStats {
+    grid-area: games;
+  }
 
-.player-color-1 {
-  background-color: #00f;
-}
+  .civStats {
+    grid-area: civ;
+  }
 
-.player-color-4 {
-  background-color: #ff0;
-}
+  .player-color {
+    border: 1px solid black;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    color: black;
+    margin: 0.3rem;
+    font-size: 1rem;
+    zoom: 1.3;
+  }
 
-table.civs {
-  border-collapse: collapse;
-  background-color: var(--table-c-bg);
-  display: table;
-}
+  .player-color-1 {
+    background-color: #00f;
+  }
 
-tbody tr:nth-child(2n + 1) {
-  background-color: var(--table-odd-c-bg);
-}
+  .player-color-4 {
+    background-color: #ff0;
+  }
 
-.civs th {
-  text-align: center;
-  letter-spacing: 0.05em;
-  font-size: 1.25rem;
-  padding: 0.5rem 1.5rem;
-}
+  table.civs {
+    border-collapse: collapse;
+    background-color: var(--table-c-bg);
+    display: table;
+  }
 
-.civs th.civ {
-  text-align: left;
-}
+  tbody tr:nth-child(2n + 1) {
+    background-color: var(--table-odd-c-bg);
+  }
 
-.civs th.adminBans {
-  font-size: 1rem;
-  width: 40px;
-}
+  .civs th {
+    text-align: center;
+    letter-spacing: 0.05em;
+    font-size: 1.25rem;
+    padding: 0.5rem 1.5rem;
+  }
 
-.civs td {
-  font-size: 1.75rem;
-  text-align: center;
-  position: relative;
-}
+  .civs th.civ {
+    text-align: left;
+  }
 
-.civs td.civ {
-  padding: 0.6rem 1.5rem;
-  text-align: left;
-}
+  .civs th.adminBans {
+    font-size: 1rem;
+    width: 40px;
+  }
 
-.civs td.wins {
-  color: #22c55e;
-}
+  .civs td {
+    font-size: 1.75rem;
+    text-align: center;
+    position: relative;
+  }
 
-.civs td.losses {
-  color: #ef4444;
-}
+  .civs td.civ {
+    padding: 0.6rem 1.5rem;
+    text-align: left;
+  }
 
-.civs td::after {
-  content: "";
-  position: absolute;
-  top: 10%;
-  right: 0;
-  width: 2px;
-  height: 80%;
-  background: linear-gradient(to bottom, transparent, #8a8a8a, transparent);
-}
+  .civs td.wins {
+    color: #22c55e;
+  }
 
-.civs td:last-child::after {
-  display: none;
-}
+  .civs td.losses {
+    color: #ef4444;
+  }
 
-.civ-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  width: 200px;
-}
+  .civs td::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    right: 0;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(to bottom, transparent, #8a8a8a, transparent);
+  }
 
-.civ-cell img {
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: contain;
-}
+  .civs td:last-child::after {
+    display: none;
+  }
 
-/* This is to display the row */
-.extraInfo {
-  display: inline-block;
-  height: 56px;
+  .civ-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 200px;
+  }
+
+  .civ-cell img {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+  }
+
+  /* This is to display the row */
+  .extraInfo {
+    display: inline-block;
+    height: 56px;
+  }
 }

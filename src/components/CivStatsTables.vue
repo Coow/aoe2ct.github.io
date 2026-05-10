@@ -102,10 +102,6 @@ const civStats = computed(() => {
 });
 </script>
 
-<style>
-@import url("../styles/warlords.css");
-</style>
-
 <template>
   <div class="statsTable">
     <CivTable :civStats="civStats.slice(0, civStats.length / 3)" />
