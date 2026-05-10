@@ -106,6 +106,10 @@ const filteredGames = computed(() =>
 const gameStats = computed(() => {
   return filteredGames.value.reduce<GameStats>(
     (stats, game) => {
+      if (!game.map) {
+        return stats;
+      }
+
       const winning = normalizeCivs(game.winningCiv);
       const losing = normalizeCivs(game.losingCiv);
 
