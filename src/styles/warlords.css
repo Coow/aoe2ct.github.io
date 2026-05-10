@@ -32,6 +32,10 @@ body:has(.warlords) {
     margin-right: 82px;
   }
 
+  .statsTable:has(.maps) {
+    grid-template-columns: 1fr;
+  }
+
   .statsTable h2 {
     text-align: center;
     color: white;
@@ -105,7 +109,8 @@ body:has(.warlords) {
     background-color: #ff0;
   }
 
-  table.civs {
+  table.civs,
+  table.maps {
     border-collapse: collapse;
     background-color: var(--table-c-bg);
     display: table;
@@ -115,14 +120,17 @@ body:has(.warlords) {
     background-color: var(--table-odd-c-bg);
   }
 
-  .civs th {
+  .civs th,
+  .maps th {
     text-align: center;
     letter-spacing: 0.05em;
     font-size: 1.25rem;
     padding: 0.5rem 1.5rem;
   }
 
-  .civs th.civ {
+  .civs th.civ,
+  .maps th.map,
+  .maps th.civ {
     text-align: left;
   }
 
@@ -131,13 +139,16 @@ body:has(.warlords) {
     width: 40px;
   }
 
-  .civs td {
+  .civs td,
+  .maps td {
     font-size: 1.75rem;
     text-align: center;
     position: relative;
   }
 
-  .civs td.civ {
+  .civs td.civ,
+  .maps td.map,
+  .maps td.civ {
     padding: 0.6rem 1.5rem;
     text-align: left;
   }
@@ -150,7 +161,8 @@ body:has(.warlords) {
     color: #ef4444;
   }
 
-  .civs td::after {
+  .civs td::after,
+  .maps td::after {
     content: "";
     position: absolute;
     top: 10%;
@@ -160,7 +172,8 @@ body:has(.warlords) {
     background: linear-gradient(to bottom, transparent, #8a8a8a, transparent);
   }
 
-  .civs td:last-child::after {
+  .civs td:last-child::after,
+  .maps td:last-child::after {
     display: none;
   }
 

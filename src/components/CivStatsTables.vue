@@ -6,7 +6,6 @@ import CivTable from "./CivTable.vue";
 
 const props = defineProps({
   code: { type: String, required: true },
-  presetMapNames: { type: Object, required: true },
 });
 const drafts: Ref<Drafts> = ref({ civDrafts: [], mapDrafts: [] });
 const players: Ref<Player[]> = ref([]);

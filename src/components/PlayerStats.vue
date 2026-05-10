@@ -2,10 +2,8 @@
 import { useData } from "vitepress";
 import { computed, Ref, ref, watchEffect } from "vue";
 import { allCivs, Player } from "../types";
-import { fetchData, normalizeCivs } from "../utils";
+import { durationToString, fetchData, normalizeCivs } from "../utils";
 import PlayerSelectionTable from "./PlayerSelectionTable.vue";
-import { format, fromUnixTime } from "date-fns";
-import { UTCDate } from "@date-fns/utc";
 import MapPicksChart from "./MapPicksChart.vue";
 import MapBansChart from "./MapBansChart.vue";
 import CivPickChart from "./CivPickChart.vue";
@@ -165,10 +163,6 @@ const bracketEapm = computed(() => {
     .filter((game) => game.bracket == bracketName)
     .map((game) => game.eapm);
 });
-
-function durationToString(duration: number) {
-  return format(new UTCDate(fromUnixTime(duration / 1000)), "HH:mm:ss");
-}
 
 function civIconName(name: string) {
   if (name == "Maya") return "mayans";
