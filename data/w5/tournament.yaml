@@ -25,12 +25,8 @@ maps:
   - MTW5 Te Fiti
 brackets:
   - Qualifier 1
-  - Qualifier 2 A
-  - Qualifier 2 B
-  - Qualifier 2 C
-  - Qualifier 2 D
-  - Qualifier 2 E
-  - Qualifier 2 F
+  - Qualifier 2
+  - Main Event
 presets:
   maps:
     bo3:
