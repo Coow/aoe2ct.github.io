@@ -4,7 +4,7 @@
 }
 
 body:has(.warlords) {
-  --vp-c-bg: white;
+  --vp-c-bg: transparent;
   --vp-font-family-base: Muara;
   --table-c-bg: oklch(0.188 0.04 37.48);
   --table-odd-c-bg: oklch(from var(--table-c-bg) calc(l + 0.2) c h);
