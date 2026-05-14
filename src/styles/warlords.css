@@ -10,6 +10,10 @@ body:has(.warlords) {
   --table-odd-c-bg: oklch(from var(--table-c-bg) calc(l + 0.2) c h);
 }
 
+html {
+  background-color: transparent;
+}
+
 .warlords {
   :root {
     --ifm-table-border-width: 0;
