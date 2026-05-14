@@ -129,6 +129,7 @@ const mapStats = computed(() => {
         second_civ: civCounts[1] ?? ["None", 0],
       };
     })
+    .filter((mapStats) => !["Steppe", "Seasons"].includes(mapStats.name))
     .sort((a, b) => {
       if (a.picks + a.admin_picks == b.picks + b.admin_picks) {
         return b.played - a.played;
