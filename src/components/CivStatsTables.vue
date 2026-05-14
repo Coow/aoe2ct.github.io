@@ -65,6 +65,9 @@ const playerStats = computed(() => {
   return players.value.reduce(
     (acc, player) => {
       const civ = normalizeCivs(player.civ);
+      if (!civ) {
+        return acc;
+      }
       const win = player.winner ? 1 : 0;
       return {
         ...acc,
