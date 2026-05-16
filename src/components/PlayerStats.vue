@@ -26,6 +26,13 @@ watchEffect(async () => {
 
 const filteredPlayers = computed(() =>
   players.value
+    .filter((player) => {
+      if (!player.player) {
+        console.error("Incorrect player");
+        console.error({ player });
+      }
+      return !!player.player;
+    })
     .filter((player) => selectedBrackets.value.includes(player.bracket))
     .filter((player) =>
       player.player.toLowerCase().includes(playerFilter.value.toLowerCase()),
