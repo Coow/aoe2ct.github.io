@@ -1,0 +1,32 @@
+name: Specialist Cup 2 Continental
+maps:
+  - Spec2_Aztlan
+  - Spec2_Badlands
+  - Spec2_Boulder Forest
+  - Spec2_Crownwood
+  - Spec2_Desert Void
+  - Spec2_Glacis
+  - Spec2_Higher Ground
+  - Spec2_Hollow Woodlands
+  - Spec2_Outcrop
+  - Spec2_Spiral
+  - Spec2_Sunburn
+  - Spec2_Terrace
+  - Spec2_Vale da Selva
+brackets:
+  - Warlord
+  - Conqueror
+  - General
+  - Chieftain
+  - Commander
+  - Warrior
+  - Mercenary
+  - Officer
+  - Watcher
+  - Recruit
+  - Militia
+presets:
+  maps:
+    pa3: CKjFl
+  civs:
+    pa3: XwiqD
