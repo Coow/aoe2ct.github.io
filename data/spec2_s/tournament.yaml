@@ -1,0 +1,30 @@
+name: Specialist Cup 2 Stronghold
+maps:
+  - Spec2_Basmo
+  - Spec2_Bypass
+  - Spec2_Copenhagen
+  - Spec2_Danakil
+  - Spec2_Dzong
+  - Spec2_Festa da Polvora
+  - Spec2_Forest Pond
+  - Spec2_Glade
+  - Spec2_Summers Clearing
+  - Spec2_Todai-Ji
+  - Spec2_Treasure Beach
+  - Spec2_Veldschans
+  - Spec2_Ze Wall
+brackets:
+  - Palace
+  - Fortress
+  - Castle
+  - Krepost
+  - Donjon
+  - Keep
+  - Guard
+  - Tower
+  - Outpost
+presets:
+  maps:
+    pa3: TdiLo
+  civs:
+    pa3: XwiqD

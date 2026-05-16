@@ -1,0 +1,30 @@
+name: Specialist Cup 2 Nomad
+maps:
+  - Spec2_Bedouins
+  - Spec2_Compass
+  - Spec2_Golden Hill
+  - Spec2_Hoodoo
+  - Spec2_Inundation
+  - Spec2_Island Hopping
+  - Spec2_Keilir Mountain
+  - Spec2_Lencois Maranhenses
+  - Spec2_Mired
+  - Spec2_Monte Pascoal
+  - Spec2_Prospector's Grail
+  - Spec2_Stranded
+  - Spec2_Winter Lakes
+brackets:
+  - Trailblazer
+  - Explorer
+  - Wayfarer
+  - Pioneer
+  - Discoverer
+  - Traveller
+  - Pathfinder
+  - Vagabond
+  - Wanderer
+presets:
+  maps:
+    pa3: CnLgN
+  civs:
+    pa3: XwiqD
