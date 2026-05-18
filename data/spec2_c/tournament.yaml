@@ -30,3 +30,7 @@ presets:
     pa3: CKjFl
   civs:
     pa3: XwiqD
+naming:
+  maps:
+    prefix: Spec2_
+    versioned: false

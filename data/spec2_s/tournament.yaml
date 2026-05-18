@@ -25,6 +25,15 @@ brackets:
   - Outpost
 presets:
   maps:
-    pa3: TdiLo
+    pa3:
+      - TdiLo
+      - Satec
   civs:
     pa3: XwiqD
+naming:
+  maps:
+    prefix: Spec2_
+    versioned: false
+  map_draft:
+    renames:
+      Festa da Polvora: Festa da Pólvora

@@ -28,3 +28,9 @@ presets:
     pa3: CnLgN
   civs:
     pa3: XwiqD
+map_renames:
+  Spec2_Lencois Maranhenses: Lençóis Maranhenses
+naming:
+  maps:
+    prefix: Spec2_
+    versioned: false
