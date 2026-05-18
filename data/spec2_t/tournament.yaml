@@ -29,3 +29,9 @@ presets:
     pa3: oYZGg
   civs:
     pa3: XwiqD
+map_renames:
+  Spec2_Amazonia: Amazônia
+naming:
+  maps:
+    prefix: Spec2_
+    versioned: false
