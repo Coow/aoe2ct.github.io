@@ -152,6 +152,8 @@ const civCounts = computed(() => {
     }
     for (let civ_id of game.civ_snipes) {
       newCounts[normalizeCivs(civ_id)].player.snipe.player += 1;
+      // This is to counter the substraction done in the BarChart
+      newCounts[normalizeCivs(civ_id)].player.pick += 1;
     }
     for (let civ_id of game.civ_steals) {
       newCounts[normalizeCivs(civ_id)].player.steal += 1;
