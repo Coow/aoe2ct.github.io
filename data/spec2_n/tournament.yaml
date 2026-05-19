@@ -29,7 +29,8 @@ presets:
   civs:
     pa3: XwiqD
 map_renames:
-  Spec2_Lencois Maranhenses: Lençóis Maranhenses
+  Spec2_Lencois Maranhenses: "Len\xE7\xF3is Maranhenses"
+  7Ps9_Wk7_LencoisMarahenses: "Len\xE7\xF3is Maranhenses"
 naming:
   maps:
     prefix: Spec2_
