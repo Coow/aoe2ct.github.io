@@ -96,10 +96,10 @@ const civStats = computed(() => {
       };
     })
     .sort((a, b) => {
-      if (a.winrate == b.winrate) {
-        return b.wins + b.losses - a.wins - a.losses;
+      if (a.wins + a.losses == b.wins + b.losses) {
+        return b.winrate - a.winrate;
       }
-      return b.winrate - a.winrate;
+      return b.wins + b.losses - a.wins - a.losses;
     });
 });
 </script>
