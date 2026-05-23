@@ -28,30 +28,33 @@ const draftStats = computed(() => {
       }),
       {},
     );
-  return drafts.value.civDrafts.reduce(
-    (overallStats, draft) => {
-      const draftStats = draft.draft.reduce(
-        (draftStats, action) => {
-          const civ = normalizeCivs(action.map);
-          const bans = (action.action == "ban" ? 1 : 0) + draftStats[civ].bans;
-          const picks =
-            (action.action == "pick" ? 1 : 0) + draftStats[civ].picks;
-          return { ...draftStats, [civ]: { bans, picks } };
-        },
-        { ...emptyObj },
-      );
-      return Object.entries(draftStats).reduce((stats, [civ, civStats]) => {
-        return {
-          ...stats,
-          [civ]: {
-            bans: civStats.bans + stats[civ].bans,
-            picks: civStats.picks + stats[civ].picks,
+  return drafts.value.civDrafts
+    .filter((draft) => draft.bracket == "Main Event")
+    .reduce(
+      (overallStats, draft) => {
+        const draftStats = draft.draft.reduce(
+          (draftStats, action) => {
+            const civ = normalizeCivs(action.map);
+            const bans =
+              (action.action == "ban" ? 1 : 0) + draftStats[civ].bans;
+            const picks =
+              (action.action == "pick" ? 1 : 0) + draftStats[civ].picks;
+            return { ...draftStats, [civ]: { bans, picks } };
           },
-        };
-      }, overallStats);
-    },
-    { ...emptyObj },
-  );
+          { ...emptyObj },
+        );
+        return Object.entries(draftStats).reduce((stats, [civ, civStats]) => {
+          return {
+            ...stats,
+            [civ]: {
+              bans: civStats.bans + stats[civ].bans,
+              picks: civStats.picks + stats[civ].picks,
+            },
+          };
+        }, overallStats);
+      },
+      { ...emptyObj },
+    );
 });
 const playerStats = computed(() => {
   const emptyObj: Record<string, { wins: number; losses: number }> =
@@ -62,23 +65,25 @@ const playerStats = computed(() => {
       }),
       {},
     );
-  return players.value.reduce(
-    (acc, player) => {
-      const civ = normalizeCivs(player.civ);
-      if (!civ) {
-        return acc;
-      }
-      const win = player.winner ? 1 : 0;
-      return {
-        ...acc,
-        [civ]: {
-          wins: acc[civ].wins + win,
-          losses: acc[civ].losses + (1 - win),
-        },
-      };
-    },
-    { ...emptyObj },
-  );
+  return players.value
+    .filter((player) => player.bracket == "Main Event")
+    .reduce(
+      (acc, player) => {
+        const civ = normalizeCivs(player.civ);
+        if (!civ) {
+          return acc;
+        }
+        const win = player.winner ? 1 : 0;
+        return {
+          ...acc,
+          [civ]: {
+            wins: acc[civ].wins + win,
+            losses: acc[civ].losses + (1 - win),
+          },
+        };
+      },
+      { ...emptyObj },
+    );
 });
 const civStats = computed(() => {
   return allCivs

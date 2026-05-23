@@ -32,9 +32,9 @@ function iconName(name: string) {
     <thead>
       <tr>
         <td class="map">Map</td>
+        <td>Played</td>
         <td>Admin Picks</td>
         <td>Player Picks</td>
-        <td>Played</td>
         <td>Total time played</td>
         <td>Longest game</td>
         <td>Shortest game</td>
@@ -47,9 +47,9 @@ function iconName(name: string) {
         <td class="map">
           {{ stats.name }}
         </td>
+        <td>{{ stats.played }} ({{ stats.played_pct }}%)</td>
         <td>{{ stats.admin_picks }}</td>
         <td>{{ stats.picks }}</td>
-        <td>{{ stats.played }} ({{ stats.played_pct }}%)</td>
         <td>{{ durationToString(stats.total_duration) }}</td>
         <td>{{ durationToString(stats.max_duration) }}</td>
         <td>{{ durationToString(stats.min_duration) }}</td>

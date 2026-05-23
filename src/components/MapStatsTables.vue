@@ -21,39 +21,42 @@ watchEffect(async () => {
 });
 
 const draftStats = computed(() => {
+  console.log(drafts.value.mapDrafts);
   const emptyObj = Object.fromEntries(
     Object.values(props.presetMapNames).map((mapName) => [
       mapName,
       { admin_picks: 0, picks: 0 },
     ]),
   );
-  return drafts.value.mapDrafts.reduce(
-    (overallStats, draft) => {
-      const draftTotals = draft.draft.reduce(
-        (cumulator, action) => {
-          const mapName = props.presetMapNames[action.map] ?? action.map;
-          const admin_picks =
-            cumulator[mapName].admin_picks + (action.type == "admin" ? 1 : 0);
-          const picks =
-            cumulator[mapName].picks + (action.type == "player" ? 1 : 0);
-          return { ...cumulator, [mapName]: { admin_picks, picks } };
-        },
-        { ...emptyObj },
-      );
-      return Object.keys(overallStats).reduce((accumulator, mapName) => {
-        return {
-          ...accumulator,
-          [mapName]: {
-            admin_picks:
-              accumulator[mapName].admin_picks +
-              draftTotals[mapName].admin_picks,
-            picks: accumulator[mapName].picks + draftTotals[mapName].picks,
+  return drafts.value.mapDrafts
+    .filter((draft) => draft.bracket == "Main Event")
+    .reduce(
+      (overallStats, draft) => {
+        const draftTotals = draft.draft.reduce(
+          (cumulator, action) => {
+            const mapName = props.presetMapNames[action.map] ?? action.map;
+            const admin_picks =
+              cumulator[mapName].admin_picks + (action.type == "admin" ? 1 : 0);
+            const picks =
+              cumulator[mapName].picks + (action.type == "player" ? 1 : 0);
+            return { ...cumulator, [mapName]: { admin_picks, picks } };
           },
-        };
-      }, overallStats);
-    },
-    { ...emptyObj },
-  );
+          { ...emptyObj },
+        );
+        return Object.keys(overallStats).reduce((accumulator, mapName) => {
+          return {
+            ...accumulator,
+            [mapName]: {
+              admin_picks:
+                accumulator[mapName].admin_picks +
+                draftTotals[mapName].admin_picks,
+              picks: accumulator[mapName].picks + draftTotals[mapName].picks,
+            },
+          };
+        }, overallStats);
+      },
+      { ...emptyObj },
+    );
 });
 
 const playerStats = computed(() => {
@@ -78,28 +81,30 @@ const playerStats = computed(() => {
       },
     ]),
   );
-  return players.value.reduce(
-    (accumulator, player) => {
-      if (!player.map) {
-        return accumulator;
-      }
-      const c = accumulator[player.map]; //current stats for map
-      return {
-        ...accumulator,
-        [player.map]: {
-          played: c.played + 1,
-          duration: c.duration + player.duration,
-          max_duration: Math.max(c.max_duration, player.duration),
-          min_duration:
-            c.min_duration == 0
-              ? player.duration
-              : Math.min(c.min_duration, player.duration),
-          played_civs: [...c.played_civs, player.civ],
-        },
-      };
-    },
-    { ...emptyObj },
-  );
+  return players.value
+    .filter((player) => player.bracket == "Main Event")
+    .reduce(
+      (accumulator, player) => {
+        if (!player.map) {
+          return accumulator;
+        }
+        const c = accumulator[player.map]; //current stats for map
+        return {
+          ...accumulator,
+          [player.map]: {
+            played: c.played + 1,
+            duration: c.duration + player.duration,
+            max_duration: Math.max(c.max_duration, player.duration),
+            min_duration:
+              c.min_duration == 0
+                ? player.duration
+                : Math.min(c.min_duration, player.duration),
+            played_civs: [...c.played_civs, player.civ],
+          },
+        };
+      },
+      { ...emptyObj },
+    );
 });
 const mapStats = computed(() => {
   return Object.values(props.presetMapNames)
@@ -131,10 +136,7 @@ const mapStats = computed(() => {
     })
     .filter((mapStats) => !["Steppe", "Seasons"].includes(mapStats.name))
     .sort((a, b) => {
-      if (a.picks + a.admin_picks == b.picks + b.admin_picks) {
-        return b.played - a.played;
-      }
-      return b.admin_picks + b.picks - a.admin_picks - a.picks;
+      return b.played - a.played;
     });
 });
 </script>
