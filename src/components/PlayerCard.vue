@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { durationToString, iconName } from "../utils";
+import { withBase } from "vitepress";
+
 const { stats } = defineProps<{ stats: PlayerSummary }>();
 
 const durations = computed(() =>
@@ -8,6 +10,7 @@ const durations = computed(() =>
 );
 const eapms = computed(() => (stats.eapms.length > 0 ? stats.eapms : [0]));
 const vils = computed(() => (stats.vils.length > 0 ? stats.vils : [0]));
+const hasImage = new URL(globalThis.location).searchParams.has("warlords");
 const civStats = computed(() => {
   return {
     totalPlayed: Object.entries(stats.civStats).filter(
@@ -39,7 +42,6 @@ const civStats = computed(() => {
 </script>
 <script lang="ts">
 import { allCivs } from "../types";
-import { withBase } from "vitepress";
 export type PlayerSummary = {
   name: string;
   games: number;
@@ -66,12 +68,14 @@ export type PlayerSummary = {
   <div class="finalistCard">
     <div class="playerImage">
       <img
+        v-if="hasImage"
         :src="withBase(`/images/${stats.name.toLowerCase()}.webp`)"
         :alt="stats.name"
       />
+      <h2 v-else>{{ stats.name }}</h2>
     </div>
     <div class="finalistTables playerStats">
-      <table class="civs">
+      <table class="civs striped">
         <colgroup>
           <col width="400" />
         </colgroup>
@@ -95,7 +99,7 @@ export type PlayerSummary = {
           </tr>
         </tbody>
       </table>
-      <table class="civs">
+      <table class="civs striped">
         <colgroup>
           <col width="400" />
         </colgroup>
@@ -133,7 +137,7 @@ export type PlayerSummary = {
       </table>
     </div>
     <div class="finalistTables gamesStats">
-      <table class="civs">
+      <table class="civs striped">
         <colgroup>
           <col width="400" />
         </colgroup>
@@ -159,7 +163,7 @@ export type PlayerSummary = {
           </tr>
         </tbody>
       </table>
-      <table class="civs">
+      <table class="civs striped">
         <colgroup>
           <col width="400" />
         </colgroup>
@@ -193,7 +197,7 @@ export type PlayerSummary = {
       </table>
     </div>
     <div class="finalistTables civStats">
-      <table class="civs">
+      <table class="civs striped">
         <colgroup>
           <col width="400" />
         </colgroup>
@@ -298,10 +302,78 @@ export type PlayerSummary = {
 </template>
 
 <style>
+.finalistCard {
+  display: grid;
+  grid-template-areas:
+    "image image"
+    "player games"
+    "civ civ";
+  zoom: 0.78;
+  margin-left: 82px;
+  margin-right: 82px;
+  gap: 1.5em;
+}
+
+.finalistTables {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.finalistTables .civs td {
+  /* transform: skew(-20deg); */
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+.finalistTables .civs td.civ {
+  padding: 0.6rem 1.5rem;
+}
+
+.finalistTables .civ-cell {
+  width: 350px;
+}
+
+.playerImage {
+  grid-area: image;
+  text-align: center;
+  margin-bottom: -2.2em;
+  display: flex;
+  justify-content: center;
+}
+
+.playerStats {
+  grid-area: player;
+}
+
+.gamesStats {
+  grid-area: games;
+}
+
+.civStats {
+  grid-area: civ;
+}
 .finalistTables tr {
   height: 3.1rem;
 }
 .finalistTables table {
   margin: 0.5rem;
+}
+
+.civs th {
+  text-align: center;
+}
+
+.civ-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 200px;
+}
+
+.civ-cell img {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
 }
 </style>

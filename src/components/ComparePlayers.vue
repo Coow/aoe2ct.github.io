@@ -113,6 +113,30 @@ const player2Stats = computed(() => computeStats(player2));
 </template>
 
 <style lang="css" module>
+@font-face {
+  font-family: "Eagle Lake";
+  src: url(/EagleLake-Regular.ttf);
+}
+
+:root {
+  --pico-font-family: "Eagle Lake" var(--pico-font-family-sans-serif);
+}
+
+:root:not([data-theme]) {
+  --pico-table-row-stripped-background-color: oklch(
+    from var(--pico-background-color) calc(l - 0.05) c h
+  );
+}
+
+:global(.pico) .comparison {
+  font-family: "Eagle Lake";
+  font-size: 1.25rem;
+}
+
+body:has(.comparison) {
+  background-color: transparent;
+}
+
 .comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;

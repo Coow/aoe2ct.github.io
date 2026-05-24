@@ -13,6 +13,6 @@ const isWarlords = new URL(globalThis.location.toString()).searchParams.has('war
 @import url("../../src/styles/warlords.css");
 </style>
 
-<section :class="{warlords: isWarlords}">
+<section :class="{warlords: isWarlords, pico: !isWarlords}">
 <ComparePlayers :code="$params.tournament" :preset-map-names="$params.presetMapChoices" />
 </section>
