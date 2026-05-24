@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { durationToString } from "../utils";
+import { durationToString, iconName } from "../utils";
 
 const props = defineProps<{
   mapStats: {
@@ -15,16 +15,6 @@ const props = defineProps<{
     second_civ: [string, number];
   }[];
 }>();
-
-function iconName(name: string) {
-  if (name.toLowerCase() == "maya") {
-    return "mayans";
-  }
-  if (name.toLowerCase() == "inca") {
-    return "incas";
-  }
-  return name.toLowerCase();
-}
 </script>
 
 <template>

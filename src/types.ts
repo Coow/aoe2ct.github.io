@@ -122,4 +122,4 @@ export const allCivs = [
   "Muisca",
   "Mapuche",
   "Tupi",
-];
+] as const;
