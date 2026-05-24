@@ -59,6 +59,7 @@ export type PlayerSummary = {
   };
   durations: number[];
   vils: number[];
+  sets: string[];
 };
 </script>
 <template>
@@ -298,7 +299,7 @@ export type PlayerSummary = {
 
 <style>
 .finalistTables tr {
-  height: 2.5rem;
+  height: 3.1rem;
 }
 .finalistTables table {
   margin: 0.5rem;

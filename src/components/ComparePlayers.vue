@@ -24,24 +24,28 @@ function summarizePlayer(accumulator: PlayerSummary, game: Player) {
   const wins = accumulator.wins + (game.winner ? 1 : 0);
   const games = accumulator.games + 1;
   const eapms = [...accumulator.eapms, game.eapm];
-  const civPicks = (game.civ_picks as Array<(typeof allCivs)[number]>)
-    .map(normalizeCivs)
-    .reduce(
-      (civs, civ) => ({
-        ...civs,
-        [civ]: { ...civs[civ], picks: civs[civ].picks + 1 },
-      }),
-      accumulator.civStats,
-    );
-  const civBans = (game.civ_bans as Array<(typeof allCivs)[number]>)
-    .map(normalizeCivs)
-    .reduce(
-      (civs, civ) => ({
-        ...civs,
-        [civ]: { ...civs[civ], bans: civs[civ].bans + 1 },
-      }),
-      civPicks,
-    );
+  const civPicks = accumulator.sets.includes(game.set_id)
+    ? { ...accumulator.civStats }
+    : (game.civ_picks as Array<(typeof allCivs)[number]>)
+        .map(normalizeCivs)
+        .reduce(
+          (civs, civ) => ({
+            ...civs,
+            [civ]: { ...civs[civ], picks: civs[civ].picks + 1 },
+          }),
+          accumulator.civStats,
+        );
+  const civBans = accumulator.sets.includes(game.set_id)
+    ? { ...accumulator.civStats }
+    : (game.civ_bans as Array<(typeof allCivs)[number]>)
+        .map(normalizeCivs)
+        .reduce(
+          (civs, civ) => ({
+            ...civs,
+            [civ]: { ...civs[civ], bans: civs[civ].bans + 1 },
+          }),
+          civPicks,
+        );
   const gameCiv = normalizeCivs(game.civ) as (typeof allCivs)[number];
   const civsPlayed = {
     ...civBans,
@@ -62,6 +66,7 @@ function summarizePlayer(accumulator: PlayerSummary, game: Player) {
     civStats: civsPlayed,
     durations: [...accumulator.durations, game.duration],
     vils: [...accumulator.vils, game.vil_count],
+    sets: [...new Set([...accumulator.sets, game.set_id])],
   };
 }
 const bracketPlayers = computed(() =>
@@ -89,6 +94,7 @@ function computeStats(playerName: string) {
       ) as PlayerSummary["civStats"],
       durations: [],
       vils: [],
+      sets: [],
     } as PlayerSummary);
 }
 const player1Stats = computed(() => computeStats(player1));
