@@ -32,6 +32,7 @@ presets:
 map_renames:
   Spec2_Amazonia: "Amaz\xF4nia"
   TTL5 Coast Arena v5: Spec2_Coast Arena
+  LM3_Comeer: Spec2_Comeer
 naming:
   maps:
     prefix: Spec2_
