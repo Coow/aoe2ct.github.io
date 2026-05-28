@@ -33,6 +33,7 @@ map_renames:
   Spec2_Amazonia: "Amaz\xF4nia"
   TTL5 Coast Arena v5: Spec2_Coast Arena
   LM3_Comeer: Spec2_Comeer
+  '[ALS16] Seychelles - TTL5': Spec2_Seychelles
 naming:
   maps:
     prefix: Spec2_
