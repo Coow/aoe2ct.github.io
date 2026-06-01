@@ -32,6 +32,7 @@ map_renames:
   Spec2_Lencois Maranhenses: "Len\xE7\xF3is Maranhenses"
   7Ps9_Wk7_LencoisMarahenses: "Len\xE7\xF3is Maranhenses"
   TTL5 Stranded v4: Spec2_Stranded
+  7Ps9_Wk4_Prospector'sGrail: Spec2_Prospector's Grail
 naming:
   maps:
     prefix: Spec2_
