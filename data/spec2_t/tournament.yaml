@@ -35,6 +35,7 @@ map_renames:
   LM3_Comeer: Spec2_Comeer
   '[ALS16] Seychelles - TTL5': Spec2_Seychelles
   TTL5 Seychelles v7: Spec2_Seychelles
+  W4 - Shorelines: Spec2_Shorelines
 naming:
   maps:
     prefix: Spec2_
