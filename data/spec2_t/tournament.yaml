@@ -1,39 +1,43 @@
 name: Specialist Cup 2 Thalassocracy
 maps:
-- Spec2_Amazonia
-- Spec2_Arctic Circle
-- Spec2_Blue Wells
-- Spec2_Coast Arena
-- Spec2_Comeer
-- Spec2_Cup
-- Spec2_Desert Paradise
-- Spec2_Fernando de Noronha
-- Spec2_Mangrove Flood
-- Spec2_Migration
-- Spec2_Seychelles
-- Spec2_Shorelines
-- Spec2_Typhoon
+  - Spec2_Amazonia
+  - Spec2_Arctic Circle
+  - Spec2_Blue Wells
+  - Spec2_Coast Arena
+  - Spec2_Comeer
+  - Spec2_Cup
+  - Spec2_Desert Paradise
+  - Spec2_Fernando de Noronha
+  - Spec2_Mangrove Flood
+  - Spec2_Migration
+  - Spec2_Seychelles
+  - Spec2_Shorelines
+  - Spec2_Te Fiti
+  - Spec2_Tidal Flain
+  - Spec2_Typhoon
 brackets:
-- Ocean
-- Coast
-- Archipelago
-- Reef
-- Bay
-- Channel
-- Lake
-- Pond
-- River
-- Beach
+  - Ocean
+  - Coast
+  - Archipelago
+  - Reef
+  - Bay
+  - Channel
+  - Lake
+  - Pond
+  - River
+  - Beach
 presets:
   maps:
     pa3: oYZGg
+    bo5: EuZVs
   civs:
     pa3: XwiqD
+    bo5: vtksA
 map_renames:
   Spec2_Amazonia: "Amaz\xF4nia"
   TTL5 Coast Arena v5: Spec2_Coast Arena
   LM3_Comeer: Spec2_Comeer
-  '[ALS16] Seychelles - TTL5': Spec2_Seychelles
+  "[ALS16] Seychelles - TTL5": Spec2_Seychelles
   TTL5 Seychelles v7: Spec2_Seychelles
   W4 - Shorelines: Spec2_Shorelines
 naming:
