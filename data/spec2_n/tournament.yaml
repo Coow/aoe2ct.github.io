@@ -1,30 +1,30 @@
 name: Specialist Cup 2 Nomad
 maps:
-  - Spec2_Bedouins
-  - Spec2_Brahmaputra
-  - Spec2_Compass
-  - Spec2_Golden Hill
-  - Spec2_Hoodoo
-  - Spec2_Inundation
-  - Spec2_Island Hopping
-  - Spec2_Keilir Mountain
-  - Spec2_Lencois Maranhenses
-  - Spec2_Mired
-  - Spec2_Monte Pascoal
-  - Spec2_Pantanal
-  - Spec2_Prospector's Grail
-  - Spec2_Stranded
-  - Spec2_Winter Lakes
+- Spec2_Bedouins
+- Spec2_Brahmaputra
+- Spec2_Compass
+- Spec2_Golden Hill
+- Spec2_Hoodoo
+- Spec2_Inundation
+- Spec2_Island Hopping
+- Spec2_Keilir Mountain
+- Spec2_Lencois Maranhenses
+- Spec2_Mired
+- Spec2_Monte Pascoal
+- Spec2_Pantanal
+- Spec2_Prospector's Grail
+- Spec2_Stranded
+- Spec2_Winter Lakes
 brackets:
-  - Trailblazer
-  - Explorer
-  - Wayfarer
-  - Pioneer
-  - Discoverer
-  - Traveller
-  - Pathfinder
-  - Vagabond
-  - Wanderer
+- Trailblazer
+- Explorer
+- Wayfarer
+- Pioneer
+- Discoverer
+- Traveller
+- Pathfinder
+- Vagabond
+- Wanderer
 presets:
   maps:
     pa3: CnLgN
@@ -37,6 +37,7 @@ map_renames:
   7Ps9_Wk7_LencoisMarahenses: "Len\xE7\xF3is Maranhenses"
   TTL5 Stranded v4: Spec2_Stranded
   7Ps9_Wk4_Prospector'sGrail: Spec2_Prospector's Grail
+  '[ALS16] Bedouins - NLR': Spec2_Bedouins
 naming:
   maps:
     prefix: Spec2_
