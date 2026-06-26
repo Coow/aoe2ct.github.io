@@ -1,0 +1,175 @@
+@font-face {
+	font-family: Muara;
+	src: url(/Muara.ttf);
+}
+
+body:has(.warlords) {
+	--vp-c-bg: transparent;
+	--vp-c-text-1: white;
+	--vp-font-family-base: Muara;
+	--table-c-bg: #2b5832e8;
+	--table-odd-c-bg: #4b74286c;
+}
+
+html {
+	background-color: transparent;
+	overflow: hidden;
+}
+
+
+:root {
+	--ifm-table-border-width: 0;
+	--ifm-table-head-color: whitesmoke;
+	--ifm-table-cell-color: white;
+	--ifm-table-cell-padding: 1px 4px 1px 1px;
+}
+
+:global(.col--8) {
+	--ifm-col-width: calc(12 / 12 * 100%);
+}
+
+.statsTable {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 10px 42px;
+	/* Essentially just transform the tables to be smaller, very hacky */
+	zoom: 0.7;
+	margin-left: 82px;
+	margin-right: 82px;
+	margin-top: 40px;
+}
+
+.statsTable:has(.maps) {
+	grid-template-columns: 1fr;
+}
+
+.statsTable h2 {
+	text-align: center;
+	color: white;
+}
+
+.player-color {
+	border: 1px solid black;
+	width: 2rem;
+	height: 2rem;
+	text-align: center;
+	color: black;
+	margin: 0.3rem;
+	font-size: 1rem;
+	zoom: 1.3;
+}
+
+.player-color-1 {
+	background-color: #00f;
+}
+
+.player-color-4 {
+	background-color: #ff0;
+}
+
+table.civs,
+table.maps {
+	border-collapse: collapse;
+	background-color: var(--table-c-bg);
+	display: table;
+}
+
+tbody tr:nth-child(2n + 1) {
+	background-color: var(--table-odd-c-bg);
+}
+
+.civs th,
+.maps th {
+	text-align: center;
+	letter-spacing: 0.05em;
+	font-size: 1.25rem;
+	padding: 0.5rem 1.5rem;
+}
+
+.civs th.civ,
+.maps th.map,
+.maps th.civ {
+	text-align: left;
+}
+
+.civs th.adminBans {
+	font-size: 1rem;
+	width: 40px;
+}
+
+.civs td,
+.maps td {
+	font-size: 1.75rem;
+	text-align: center;
+	position: relative;
+}
+
+.civs td.civ,
+.maps td.map,
+.maps td.civ {
+	padding: 0.6rem 1.5rem;
+	text-align: left;
+}
+
+.civs td.wins {
+	color: #22c55e;
+}
+
+.civs td.losses {
+	color: #ef4444;
+}
+
+.civs td::after,
+.maps td::after {
+	content: "";
+	position: absolute;
+	top: 10%;
+	right: 0;
+	width: 2px;
+	height: 80%;
+	background: linear-gradient(to bottom, transparent, #8a8a8a, transparent);
+}
+
+.civs td:last-child::after,
+.maps td:last-child::after {
+	display: none;
+}
+
+.civ-cell {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 200px;
+}
+
+.civ-cell img {
+	width: 2.5rem;
+	height: 2.5rem;
+	object-fit: contain;
+}
+
+/* This is to display the row */
+.extraInfo {
+	display: inline-block;
+	height: 56px;
+}
+
+.map-cell {
+	display: flex;
+	align-items: center;
+}
+
+.map-cell img {
+	width: 3rem;
+	height: 3rem;
+	transform: scale(1.5);
+	margin-right: 2rem;
+}
+
+#map-Te_Fiti {
+	content: url("/images/bd/Amazonia.png")
+}
+
+#map-Crossroads {
+	content: url("/images/bd/Amazonia.png")
+}

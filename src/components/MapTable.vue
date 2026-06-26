@@ -35,7 +35,10 @@ const props = defineProps<{
     <tbody>
       <tr v-for="stats in mapStats" :key="stats.name">
         <td class="map">
-          {{ stats.name }}
+			<div class="map-cell">
+				<img src="" :id="`map-${stats.name.replace(/ /g,'_')}`"/>
+				{{ stats.name }}
+			</div>
         </td>
         <td>{{ stats.played }} ({{ stats.played_pct }}%)</td>
         <td>{{ stats.admin_picks }}</td>
